@@ -1,1 +1,132 @@
-<p>purchase-requisitions works!</p>
+<!-- Top Control Bar: Search -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Purchase Requisitions</h4>
+  <div class="d-flex gap-2">
+    <!-- Search Input -->
+    <input 
+      type="text" 
+      class="form-control" 
+      placeholder="Search PR..." 
+      #searchInput 
+      (keyup.enter)="onSearch(searchInput.value)">
+    <button class="btn btn-secondary" (click)="onSearch(searchInput.value)">Search</button>
+  </div>
+</div>
+
+<!-- Data Table -->
+<div class="table-responsive bg-white rounded shadow-sm">
+  <table class="table table-hover mb-0">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">PR Number</th>
+        <th scope="col">Title</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Using your modern Angular @for loop -->
+      @for(pr of prs; track pr.prId) {
+      <tr>
+        <th scope="row">{{ pr.prId }}</th>
+        <td>{{ pr.prNumber }}</td>
+        <td>{{ pr.title }}</td>
+        <td>
+          <!-- FIXED: Added lowercase and alternate spellings so all badges show up -->
+          <span class="badge" 
+                [ngClass]="{
+                  'bg-success': pr.status === 'Approved' || pr.status === 'Approve' || pr.status === 'approved', 
+                  'bg-warning text-dark': pr.status === 'Pending' || pr.status === 'pending', 
+                  'bg-danger': pr.status === 'Rejected' || pr.status === 'Reject' || pr.status === 'rejected'
+                }">
+            {{ pr.status }}
+          </span>
+        </td>
+        <td>
+          <!-- Edit Button opens the modal and populates the form -->
+          <button 
+            class="btn btn-sm btn-primary" 
+            data-bs-toggle="modal" 
+            data-bs-target="#editModal" 
+            (click)="openEditModal(pr)">
+            Edit
+          </button>
+        </td>
+      </tr>
+      }
+
+      <!-- Show message if no data exists -->
+      @if(prs.length === 0) {
+        <tr>
+          <td colspan="5" class="text-center py-4 text-muted">No Purchase Requisitions found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination Controls -->
+<div class="d-flex justify-content-between align-items-center mt-3">
+  <small class="text-muted">Total Records: {{ totalRecords }}</small>
+  <nav>
+    <ul class="pagination pagination-sm mb-0">
+      <li class="page-item" [class.disabled]="pageNumber === 1">
+        <button class="page-link" (click)="changePage(pageNumber - 1)">Previous</button>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">Page {{ pageNumber }} of {{ totalPages }}</span>
+      </li>
+      <li class="page-item" [class.disabled]="pageNumber === totalPages || totalPages === 0">
+        <button class="page-link" (click)="changePage(pageNumber + 1)">Next</button>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Purchase Requisition</h5>
+        <!-- FIXED: Bootstrap 5 close button -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Connect the Form Group -->
+     <!-- FIXED: Removed (ngSubmit) entirely -->
+      <form [formGroup]="updateForm">
+        <div class="modal-body">
+          <div class="form-group mb-2">
+            <label>PR Number</label>
+            <input type="text" class="form-control" formControlName="prNumber">
+          </div>
+          <div class="form-group mb-2">
+            <label>Title</label>
+            <input type="text" class="form-control" formControlName="title">
+          </div>
+          <div class="form-group mb-2">
+            <label>Description</label>
+            <textarea class="form-control" formControlName="description" rows="3"></textarea>
+          </div>
+          <div class="form-group mb-2">
+            <label>Status</label>
+            <select class="form-control" formControlName="status">
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          
+          <!-- FIXED: Changed to type="button" and directly attached (click)="submitUpdate()" -->
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="submitUpdate()">Save changes</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
