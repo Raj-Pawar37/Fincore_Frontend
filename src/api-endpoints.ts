@@ -28,6 +28,12 @@ export const ApiEndpoints = {
         Create: `${BASE_URL}/quotation`,
         Update: `${BASE_URL}/quotation`,
         Delete: `${BASE_URL}/quotation`
+    },
+    Roles: {
+        ReadAll: `${BASE_URL}/roles`,
+        ReadById: `${BASE_URL}/roles`,
+        Create: `${BASE_URL}/roles`,
+        Update: `${BASE_URL}/roles`,
+        Delete: `${BASE_URL}/roles`
     }
-
 };
