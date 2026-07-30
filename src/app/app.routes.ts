@@ -94,7 +94,20 @@ export const routes: Routes = [
   },
 
   {
+      path: 'unauthorized',
+      loadComponent: () =>
+        import('./shared/pages/unauthorized/unauthorized').then(component => component.Unauthorized),
+    },
+
+    {
+      path: 'not-found',
+      loadComponent: () => import('./shared/pages/not-found/not-found').then(component => component.NotFound),
+    },
+
+
+  {
     path: '**',
-    redirectTo: 'dashboard',
+    redirectTo: 'not-found',
   },
+
 ];

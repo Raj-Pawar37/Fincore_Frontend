@@ -1,0 +1,35 @@
+<div class="error-page">
+  <div class="error-card">
+    <div class="error-icon">
+      <i class="bi bi-shield-lock"></i>
+    </div>
+
+    <div class="error-code">403</div>
+
+    <h1>Access Denied</h1>
+
+    <p>
+      You do not have permission to access this page. Contact the administrator
+      if you believe you should have access.
+    </p>
+
+    <div class="error-actions">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="goBack()"
+      >
+        <i class="bi bi-arrow-left me-2"></i>
+        Go Back
+      </button>
+
+      <a
+        class="btn btn-dark"
+        routerLink="/dashboard"
+      >
+        <i class="bi bi-speedometer2 me-2"></i>
+        Go to Dashboard
+      </a>
+    </div>
+  </div>
+</div>
