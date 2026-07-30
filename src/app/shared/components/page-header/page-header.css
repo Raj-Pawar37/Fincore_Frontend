@@ -1,0 +1,27 @@
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 1rem;
+    padding-bottom: .75rem;
+
+    border-bottom: 1px solid #dee2e6;
+}
+
+.page-title h4 {
+    margin: 0;
+
+    font-size: 1.4rem;
+    font-weight: 600;
+
+    color: #212529;
+}
+
+.page-actions {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+
+    flex-wrap: wrap;
+}

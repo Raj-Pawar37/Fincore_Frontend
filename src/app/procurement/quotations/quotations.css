@@ -1,0 +1,43 @@
+.card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.table th {
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.table td {
+  font-size: 0.9rem;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  color: #adb5bd;
+}
+
+.modal-content {
+  border-radius: 0.75rem;
+}
+
+.modal-header,
+.modal-footer {
+  padding: 1rem 1.25rem;
+}
+
+.modal-body {
+  padding: 1.25rem;
+}
+
+.input-group-text {
+  color: #6c757d;
+}
+
+.badge {
+  min-width: 80px;
+  padding: 0.45rem 0.65rem;
+  font-weight: 500;
+}
