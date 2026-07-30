@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { LoginRequest } from './login-interface';
 import { LoginService } from './login-service';
 import { Authservice } from '../../core/auth/authservice';
 import { Router } from '@angular/router'
+import { NotificationService } from '../../shared/services/notification';
 
 @Component({
   selector: 'app-login',
@@ -14,12 +15,15 @@ import { Router } from '@angular/router'
 export class Login {
   
   // Flags
-  isLoading = false;
+  isLoading = signal(false);
 
   // services
   private readonly loginService = inject(LoginService);
   private readonly authService = inject(Authservice);
   private readonly router = inject(Router);
+  private readonly notificationService = inject(NotificationService);
+
+
 
   loginForm = new FormGroup({
     username: new FormControl('', [
@@ -37,8 +41,11 @@ export class Login {
   // Events
 
   onSubmit() {
+
+
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
+      this.notificationService.warning('Please enter a valid username and password.');
       return;
     }
 
@@ -46,7 +53,7 @@ export class Login {
       username: this.loginForm.controls.username.getRawValue() ?? '',
       password: this.loginForm.controls.password.getRawValue() ?? '',
     };
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.login(data);
   }
 
@@ -55,14 +62,19 @@ export class Login {
   login(data: LoginRequest) {
     this.loginService.login(data).subscribe({
       next: (res) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
+
         if (res.data?.accessToken) {
+          this.notificationService.success(res.message || 'Login completed successfully.');
           this.authService.setAccessToken(res.data.accessToken);
           this.router.navigate(['/dashboard']);
         }
+
       },
       error: (err) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
+        const message = err?.error?.message || err?.error?.error || 'Invalid username or password.';
+        this.notificationService.error(message,'Login Failed');
         console.log(err);
       },
     });

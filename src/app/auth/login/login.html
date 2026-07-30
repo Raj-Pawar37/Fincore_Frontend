@@ -69,8 +69,8 @@
             </small>
             }
 
-            <button type="submit" class="btn btn-primary w-100 login-button" [disabled]="isLoading">
-                @if (isLoading) {
+            <button type="submit" class="btn btn-primary w-100 login-button" [disabled]="isLoading()">
+                @if (isLoading()) {
                 <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
 
                 Signing in...
@@ -88,3 +88,4 @@
         </div>
     </div>
 </div>
+
