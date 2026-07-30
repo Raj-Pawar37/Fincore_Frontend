@@ -1,10 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { LoginRequest } from './login-interface';
-import { LoginService } from './login-service';
 import { Authservice } from '../../core/auth/authservice';
 import { Router } from '@angular/router'
 import { NotificationService } from '../../shared/services/notification';
+import { LoginRequest } from '../../core/auth/auth.interface';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +17,6 @@ export class Login {
   isLoading = signal(false);
 
   // services
-  private readonly loginService = inject(LoginService);
   private readonly authService = inject(Authservice);
   private readonly router = inject(Router);
   private readonly notificationService = inject(NotificationService);
@@ -60,7 +58,7 @@ export class Login {
   // Database fucntions
 
   login(data: LoginRequest) {
-    this.loginService.login(data).subscribe({
+    this.authService.login(data).subscribe({
       next: (res) => {
         this.isLoading.set(false);
 
