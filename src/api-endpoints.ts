@@ -22,11 +22,23 @@ export const ApiEndpoints = {
   },
 
   Quotation: {
-      Create : `${BASE_URL}/quotation`,
-      Update : `${BASE_URL}/quotation`,
-      Delete : `${BASE_URL}/quotation`,
-      ReadById : `${BASE_URL}/quotation`,
-      ReadAll : `${BASE_URL}/quotation`,
-      ReadByRfqId : `${BASE_URL}/quotation`
+    Create: `${BASE_URL}/quotation`,
+    Update: `${BASE_URL}/quotation`,
+    Delete: `${BASE_URL}/quotation`,
+    ReadById: `${BASE_URL}/quotation`,
+    ReadAll: `${BASE_URL}/quotation`,
+    ReadByRfqId: `${BASE_URL}/quotation`
   },
+
+  RFQ: {
+    Create: `${BASE_URL}/rfqs`,
+    Update: `${BASE_URL}/rfqs`,
+    Delete: `${BASE_URL}/rfqs`,
+    ReadById: `${BASE_URL}/rfqs`,
+    ReadAll: `${BASE_URL}/rfqs`,
+    dropdown: `${BASE_URL}/rfqs/dropdown`
+  },
+
+
+
 };

@@ -1,7 +1,7 @@
 import { Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { QuotationService } from './quotation-service';
 import { NotificationService } from '../../shared/services/notification';
-import { Quotation, QuotationCreateRequest, QuotationUpdateRequest } from './quotation-interface';
+import { Quotation, QuotationCreateRequest, QuotationUpdateRequest, VendorRfqDropdown } from './quotation-interface';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DateUtils } from '../../shared/utils/date-utils';
 import { PageHeader } from '../../shared/components/page-header/page-header';
@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
 })
 export class Quotations implements OnInit {
 
-
+  vendorId = 1; // temporarily; later take from auth/JWT
 
   // Flags
   isLoading = signal(false);
@@ -38,6 +38,8 @@ export class Quotations implements OnInit {
 
   selectedQuotationId = 0;
   quotationList: Quotation[] = [];
+  rfqDropdownList: VendorRfqDropdown[] = [];
+
   quotationForm = new FormGroup({
 
     quotationId: new FormControl(0),
@@ -54,6 +56,7 @@ export class Quotations implements OnInit {
 
   ngOnInit() {
     this.readAll();
+    this.readRfqDropdown();
   }
 
 
@@ -73,6 +76,17 @@ export class Quotations implements OnInit {
 
   editQuotation(data: Quotation) {
     this.isEditMode.set(true);
+
+    const currentRfq: VendorRfqDropdown = {
+      rfqId: data.rfqId,
+      rfqVendorId: data.rfqVendorId,
+      rfqNumber: data.rfqNumber ?? '',
+      rfqTitle: '',
+      vendorId: this.vendorId
+    };
+
+    this.rfqDropdownList = [ currentRfq, ...this.rfqDropdownList];
+
 
     this.quotationForm.patchValue({
       quotationId: data.quotationId,
@@ -139,6 +153,30 @@ export class Quotations implements OnInit {
   }
 
 
+  onRfqChange(event: Event): void {
+    const rfqVendorId = Number(
+      (event.target as HTMLSelectElement).value
+    );
+
+    const selectedRfq = this.rfqDropdownList.find(
+      x => x.rfqVendorId === rfqVendorId
+    );
+
+    if (!selectedRfq) {
+      this.quotationForm.patchValue({
+        rfqId: 0,
+        rfqVendorId: 0
+      });
+
+      return;
+    }
+
+    this.quotationForm.patchValue({
+      rfqId: selectedRfq.rfqId,
+      rfqVendorId: selectedRfq.rfqVendorId
+    });
+  }
+
 
 
 
@@ -179,7 +217,7 @@ export class Quotations implements OnInit {
         this.closeQuotationModal();
         this.resetForm();
         this.readAll();
-
+        this.readRfqDropdown();
         // Close modal later
       },
 
@@ -205,7 +243,7 @@ export class Quotations implements OnInit {
         this.closeQuotationModal();
         this.resetForm();
         this.readAll();
-
+        this.readRfqDropdown();
         // Close modal later
       },
 
@@ -225,6 +263,7 @@ export class Quotations implements OnInit {
       next: (res) => {
         this.isLoading.set(false);
         this.quotationList = res.data ?? [];
+        
       },
 
       error: (err) => {
@@ -249,6 +288,7 @@ export class Quotations implements OnInit {
 
         this.notificationService.success(res.message || 'Quotation deleted successfully.');
         this.readAll();
+        this.readRfqDropdown();
       },
 
       error: (err) => {
@@ -259,7 +299,20 @@ export class Quotations implements OnInit {
   }
 
 
+  readRfqDropdown() {
 
+
+    this.quotationService.getDropdown('', this.vendorId, 'Open').subscribe({
+      next: (res) => {
+        this.rfqDropdownList = res.data ?? [];
+      },
+      error: (err) => {
+        this.rfqDropdownList = [];
+        const message = err?.error?.message || err?.error?.error || 'Unable to fetch RFQs.';
+        this.notificationService.error(message);
+      }
+    });
+  }
 
 
 

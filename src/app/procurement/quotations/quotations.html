@@ -4,10 +4,7 @@
 
   <app-page-header title="Quotations">
 
-    <button
-      type="button"
-      class="btn btn-primary"
-      (click)="openCreateModal()">
+    <button type="button" class="btn btn-primary" (click)="openCreateModal()">
 
       <i class="bi bi-plus-lg me-1"></i>
       Add Quotation
@@ -33,10 +30,7 @@
               <i class="bi bi-search"></i>
             </span>
 
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Search quotation number or vendor">
+            <input type="text" class="form-control" placeholder="Search quotation number or vendor">
 
           </div>
 
@@ -58,9 +52,7 @@
 
         <div class="col-md-auto">
 
-          <button
-            type="button"
-            class="btn btn-outline-secondary">
+          <button type="button" class="btn btn-outline-secondary">
 
             <i class="bi bi-funnel me-1"></i>
             Filter
@@ -80,197 +72,156 @@
 
       @if (isLoading()) {
 
-        <div class="text-center py-5">
+      <div class="text-center py-5">
 
-          <div
-            class="spinner-border text-primary"
-            role="status">
+        <div class="spinner-border text-primary" role="status">
 
-            <span class="visually-hidden">
-              Loading...
-            </span>
-
-          </div>
-
-          <p class="text-muted mt-2 mb-0">
-            Loading quotations...
-          </p>
+          <span class="visually-hidden">
+            Loading...
+          </span>
 
         </div>
+
+        <p class="text-muted mt-2 mb-0">
+          Loading quotations...
+        </p>
+
+      </div>
 
       } @else if (quotationList.length === 0) {
 
-        <!-- Empty State -->
+      <!-- Empty State -->
 
-        <div class="text-center py-5">
+      <div class="text-center py-5">
 
-          <div class="empty-icon mb-3">
-            <i class="bi bi-file-earmark-text"></i>
-          </div>
-
-          <h5>No quotations found</h5>
-
-          <p class="text-muted">
-            Create your first quotation to get started.
-          </p>
-
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="openCreateModal()">
-
-            <i class="bi bi-plus-lg me-1"></i>
-            Add Quotation
-
-          </button>
-
+        <div class="empty-icon mb-3">
+          <i class="bi bi-file-earmark-text"></i>
         </div>
+
+        <h5>No quotations found</h5>
+
+        <p class="text-muted">
+          Create your first quotation to get started.
+        </p>
+
+        <button type="button" class="btn btn-primary" (click)="openCreateModal()">
+
+          <i class="bi bi-plus-lg me-1"></i>
+          Add Quotation
+
+        </button>
+
+      </div>
 
       } @else {
 
-        <!-- Table -->
+      <!-- Table -->
 
-        <div class="table-responsive">
+      <div class="table-responsive">
 
-          <table class="table table-hover align-middle mb-0">
+        <table class="table table-hover align-middle mb-0">
 
-            <thead class="table-light">
+          <thead class="table-light">
 
-              <tr>
-                <th>#</th>
-                <th>Quotation Number</th>
-                <th>RFQ Number</th>
-                <th>Vendor</th>
-                <th>Quotation Date</th>
-                <th class="text-end">Amount</th>
-                <th>Status</th>
-                <th class="text-center">Actions</th>
-              </tr>
+            <tr>
+              <th>#</th>
+              <th>Quotation Number</th>
+              <th>RFQ Number</th>
+              <th>Vendor</th>
+              <th>Quotation Date</th>
+              <th class="text-end">Amount</th>
+              <th>Status</th>
+              <th class="text-center">Actions</th>
+            </tr>
 
-            </thead>
-
-
-            <tbody>
-
-              @for (
-                quotation of quotationList;
-                track quotation.quotationId;
-                let index = $index
-              ) {
-
-                <tr>
-
-                  <td>
-                    {{ index + 1 }}
-                  </td>
+          </thead>
 
 
-                  <td>
+          <tbody>
 
-                    <div class="fw-semibold">
-                      {{ quotation.quotationNumber }}
-                    </div>
+            @for ( quotation of quotationList; track quotation.quotationId;let index = $index) {
+            <tr>
+              <td>
+                {{ index + 1 }}
+              </td>
 
-                    @if (quotation.desc) {
+              <td>
 
-                      <small class="text-muted">
-                        {{ quotation.desc }}
-                      </small>
+                <div class="fw-semibold">
+                  {{ quotation.quotationNumber }}
+                </div>
 
-                    }
+                @if (quotation.desc) {
 
-                  </td>
+                <small class="text-muted">
+                  {{ quotation.desc }}
+                </small>
 
+                }
 
-                  <td>
-                    {{ quotation.rfqNumber || '-' }}
-                  </td>
-
-
-                  <td>
-                    {{ quotation.vendorName || '-' }}
-                  </td>
+              </td>
 
 
-                  <td>
-                    {{ dateUtils.toDisplayDate(
-                      quotation.quotationDate
-                    ) }}
-                  </td>
+              <td>
+                {{ quotation.rfqNumber || '-' }}
+              </td>
 
 
-                  <td class="text-end fw-semibold">
-
-                    {{
-                      quotation.amount
-                        | currency:'INR':'symbol':'1.2-2'
-                    }}
-
-                  </td>
+              <td>
+                {{ quotation.vendorName || '-' }}
+              </td>
 
 
-                  <td>
-
-                    <span
-                      class="badge rounded-pill"
-                      [class.text-bg-secondary]="
-                        quotation.status === 'Draft'
-                      "
-                      [class.text-bg-info]="
-                        quotation.status === 'Submitted'
-                      "
-                      [class.text-bg-success]="
-                        quotation.status === 'Accepted'
-                      "
-                      [class.text-bg-danger]="
-                        quotation.status === 'Rejected'
-                      ">
-
-                      {{ quotation.status }}
-
-                    </span>
-
-                  </td>
+              <td>
+                {{ dateUtils.toDisplayDate(quotation.quotationDate) }}
+              </td>
 
 
-                  <td class="text-center">
-
-                    <div class="btn-group btn-group-sm">
-
-                      <button
-                        type="button"
-                        class="btn btn-outline-primary"
-                        title="Edit"
-                        (click)="editQuotation(quotation)">
-
-                        <i class="bi bi-pencil-square"></i>
-
-                      </button>
+              <td class="text-end fw-semibold">
+                {{ quotation.amount | currency:'INR':'symbol':'1.2-2'}}
+              </td>
 
 
-                      <button
-                        type="button"
-                        class="btn btn-outline-danger"
-                        title="Delete"
-                        (click)="openDeleteModal(quotation)">
+              <td>
+                <span class="badge rounded-pill" [class.text-bg-secondary]= " quotation.status === 'Draft'" 
+                      [class.text-bg-info] = " quotation.status === 'Submitted'" 
+                      [class.text-bg-success] = "quotation.status === 'Accepted'" 
+                      [class.text-bg-danger]= " quotation.status === 'Rejected'">
+                  {{ quotation.status }}
+                </span>
+              </td>
 
-                        <i class="bi bi-trash3"></i>
 
-                      </button>
+              <td class="text-center">
 
-                    </div>
+                @if (quotation.status === 'Draft') {
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-outline-primary" title="Edit" (click)="editQuotation(quotation)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-danger" title="Delete"
+                    (click)="openDeleteModal(quotation)">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </div>
 
-                  </td>
+                } @else {
+                <span class="text-muted">
+                  <i class="bi bi-lock-fill me-1"></i>
+                  Locked
+                </span>
+                }
+              </td>
 
-                </tr>
+            </tr>
 
-              }
+            }
 
-            </tbody>
+          </tbody>
 
-          </table>
+        </table>
 
-        </div>
+      </div>
 
       }
 
@@ -284,40 +235,27 @@
 
 <!-- Create / Update Quotation Modal -->
 
-<div
-  #quotationModal
-  class="modal fade"
-  tabindex="-1"
-  aria-labelledby="quotationModalLabel"
-  aria-hidden="true">
+<div #quotationModal class="modal fade" tabindex="-1" aria-labelledby="quotationModalLabel" aria-hidden="true">
 
   <div class="modal-dialog modal-lg modal-dialog-centered">
 
     <div class="modal-content border-0">
 
-      <form
-        [formGroup]="quotationForm"
-        (ngSubmit)="onSubmit()">
+      <form [formGroup]="quotationForm" (ngSubmit)="onSubmit()">
 
         <div class="modal-header">
 
-          <h5
-            class="modal-title"
-            id="quotationModalLabel">
+          <h5 class="modal-title" id="quotationModalLabel">
 
             @if (isEditMode()) {
-              Update Quotation
+            Update Quotation
             } @else {
-              Create Quotation
+            Create Quotation
             }
 
           </h5>
 
-          <button
-            type="button"
-            class="btn-close"
-            aria-label="Close"
-            [disabled]="isSubmitting()"
+          <button type="button" class="btn-close" aria-label="Close" [disabled]="isSubmitting()"
             (click)="closeQuotationModal()">
           </button>
 
@@ -326,64 +264,36 @@
 
         <div class="modal-body">
 
-          <input
-            type="hidden"
-            formControlName="quotationId">
+          <input type="hidden" formControlName="quotationId">
 
-          <input
-            type="hidden"
-            formControlName="isActive">
+          <input type="hidden" formControlName="isActive">
 
 
           <div class="row g-3">
 
-            <!-- RFQ ID -->
-
             <div class="col-md-6">
 
-              <label class="form-label">
-                RFQ
+              <label class="form-label"> RFQ
                 <span class="text-danger">*</span>
               </label>
 
-              <input
-                type="number"
-                class="form-control"
-                formControlName="rfqId"
-                placeholder="Enter RFQ ID"
-                [class.is-invalid]="
-                  quotationForm.controls.rfqId.invalid &&
-                  quotationForm.controls.rfqId.touched
-                ">
+              <select class="form-select" formControlName="rfqVendorId" (change)="onRfqChange($event)"
+                [class.is-invalid]=" quotationForm.controls.rfqVendorId.invalid && quotationForm.controls.rfqVendorId.touched">
+
+                <option value="0">
+                  Select RFQ
+                </option>
+
+                @for ( rfq of rfqDropdownList; track rfq.rfqVendorId) {
+                <option [value]="rfq.rfqVendorId">
+                  {{ rfq.rfqNumber }} - {{ rfq.rfqTitle }}
+                </option>
+                }
+
+              </select>
 
               <div class="invalid-feedback">
-                RFQ is required.
-              </div>
-
-            </div>
-
-
-            <!-- RFQ Vendor ID -->
-
-            <div class="col-md-6">
-
-              <label class="form-label">
-                Vendor
-                <span class="text-danger">*</span>
-              </label>
-
-              <input
-                type="number"
-                class="form-control"
-                formControlName="rfqVendorId"
-                placeholder="Enter RFQ vendor ID"
-                [class.is-invalid]="
-                  quotationForm.controls.rfqVendorId.invalid &&
-                  quotationForm.controls.rfqVendorId.touched
-                ">
-
-              <div class="invalid-feedback">
-                Vendor is required.
+                Please select an RFQ.
               </div>
 
             </div>
@@ -398,12 +308,8 @@
                 <span class="text-danger">*</span>
               </label>
 
-              <input
-                type="text"
-                class="form-control"
-                formControlName="quotationNumber"
-                placeholder="Example: QUO-2026-0001"
-                [class.is-invalid]="
+              <input type="text" class="form-control" formControlName="quotationNumber"
+                placeholder="Example: QUO-2026-0001" [class.is-invalid]="
                   quotationForm.controls.quotationNumber.invalid &&
                   quotationForm.controls.quotationNumber.touched
                 ">
@@ -411,17 +317,17 @@
               <div class="invalid-feedback">
 
                 @if (
-                  quotationForm.controls.quotationNumber
-                    .hasError('required')
+                quotationForm.controls.quotationNumber
+                .hasError('required')
                 ) {
-                  Quotation number is required.
+                Quotation number is required.
                 }
 
                 @if (
-                  quotationForm.controls.quotationNumber
-                    .hasError('maxlength')
+                quotationForm.controls.quotationNumber
+                .hasError('maxlength')
                 ) {
-                  Maximum 100 characters are allowed.
+                Maximum 100 characters are allowed.
                 }
 
               </div>
@@ -438,11 +344,7 @@
                 <span class="text-danger">*</span>
               </label>
 
-              <input
-                type="date"
-                class="form-control"
-                formControlName="quotationDate"
-                [class.is-invalid]="
+              <input type="date" class="form-control" formControlName="quotationDate" [class.is-invalid]="
                   quotationForm.controls.quotationDate.invalid &&
                   quotationForm.controls.quotationDate.touched
                 ">
@@ -463,13 +365,9 @@
                 <span class="text-danger">*</span>
               </label>
 
-              <select
-                class="form-select"
-                formControlName="status"
-                [class.is-invalid]="
+              <select class="form-select" formControlName="status" [class.is-invalid]="
                   quotationForm.controls.status.invalid &&
-                  quotationForm.controls.status.touched
-                ">
+                  quotationForm.controls.status.touched">
 
                 <option value="Draft">Draft</option>
                 <option value="Submitted">Submitted</option>
@@ -493,11 +391,7 @@
                 Description
               </label>
 
-              <textarea
-                class="form-control"
-                rows="3"
-                formControlName="desc"
-                placeholder="Enter quotation description">
+              <textarea class="form-control" rows="3" formControlName="desc" placeholder="Enter quotation description">
               </textarea>
 
             </div>
@@ -509,40 +403,29 @@
 
         <div class="modal-footer">
 
-          <button
-            type="button"
-            class="btn btn-light"
-            [disabled]="isSubmitting()"
-            (click)="closeQuotationModal()">
+          <button type="button" class="btn btn-light" [disabled]="isSubmitting()" (click)="closeQuotationModal()">
 
             Cancel
 
           </button>
 
 
-          <button
-            type="submit"
-            class="btn btn-primary"
-            [disabled]="isSubmitting()">
+          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
 
             @if (isSubmitting()) {
 
-              <span
-                class="spinner-border spinner-border-sm me-1"
-                aria-hidden="true">
-              </span>
-
-              Saving...
+            <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+            Saving...
 
             } @else {
 
-              <i class="bi bi-check-lg me-1"></i>
+            <i class="bi bi-check-lg me-1"></i>
 
-              @if (isEditMode()) {
-                Update Quotation
-              } @else {
-                Create Quotation
-              }
+            @if (isEditMode()) {
+            Update Quotation
+            } @else {
+            Create Quotation
+            }
 
             }
 
@@ -562,6 +445,5 @@
 
 <!-- Common Delete Confirmation Modal -->
 
-<app-confirm-modal
-  (confirmed)="confirmDelete()">
+<app-confirm-modal (confirmed)="confirmDelete()">
 </app-confirm-modal>

@@ -24,3 +24,16 @@ export interface Quotation {
   vendorName: string;
   rfqNumber: string | null;
 }
+
+
+
+
+// Need to move this in RFQ 
+
+export interface VendorRfqDropdown {
+  rfqId: number;
+  vendorId: number;
+  rfqVendorId: number;
+  rfqNumber: string;
+  rfqTitle: string | null;
+}
