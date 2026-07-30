@@ -1,0 +1,18 @@
+.sidebar {
+  min-height: calc(100vh - 100px);
+}
+
+.nav-link {
+  color: #333;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.nav-link:hover {
+  background-color: #e9ecef;
+}
+
+.nav-link.active {
+  background-color: #212529;
+  color: white;
+}

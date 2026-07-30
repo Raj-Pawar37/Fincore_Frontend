@@ -1,0 +1,17 @@
+<div class="app-layout">
+  <app-navbar></app-navbar>
+
+  <div class="container-fluid">
+    <div class="row">
+      <aside class="col-md-2 p-0">
+        <app-sidebar></app-sidebar>
+      </aside>
+
+      <main class="col-md-10 p-4 bg-body-tertiary">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>
