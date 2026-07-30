@@ -1,0 +1,30 @@
+<div class="error-page">
+  <div class="error-card">
+    <div class="error-code">404</div>
+
+    <h1>Page Not Found</h1>
+
+    <p>
+      The page you are looking for does not exist or may have been moved.
+    </p>
+
+    <div class="error-actions">
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="goBack()"
+      >
+        <i class="bi bi-arrow-left me-2"></i>
+        Go Back
+      </button>
+
+      <a
+        class="btn btn-dark"
+        routerLink="/dashboard"
+      >
+        <i class="bi bi-speedometer2 me-2"></i>
+        Go to Dashboard
+      </a>
+    </div>
+  </div>
+</div>

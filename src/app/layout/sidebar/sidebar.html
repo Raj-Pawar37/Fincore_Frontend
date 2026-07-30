@@ -1,0 +1,70 @@
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h6 class="sidebar-title">Main Menu</h6>
+  </div>
+
+  <nav class="sidebar-nav">
+    @for (item of navigationItems; track item.label) {
+
+      @if (item.route) {
+        <a
+          class="sidebar-link"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span class="sidebar-link-content">
+            <i class="bi sidebar-icon" [class]="item.icon"></i>
+            <span>{{ item.label }}</span>
+          </span>
+        </a>
+      }
+
+      @if (item.children) {
+        <button
+          type="button"
+          class="sidebar-link sidebar-menu-button"
+          [class.expanded]="openMenu === item.label"
+          (click)="toggleMenu(item.label)"
+        >
+          <span class="sidebar-link-content">
+            <i class="bi sidebar-icon" [class]="item.icon"></i>
+            <span>{{ item.label }}</span>
+          </span>
+
+          <i
+            class="bi sidebar-arrow"
+            [class.bi-chevron-down]="openMenu !== item.label"
+            [class.bi-chevron-up]="openMenu === item.label"
+          ></i>
+        </button>
+
+        @if (openMenu === item.label) {
+          <div class="sidebar-submenu">
+            @for (child of item.children; track child.label) {
+              <a
+                class="sidebar-submenu-link"
+                [routerLink]="child.route"
+                routerLinkActive="active"
+              >
+                <i class="bi sidebar-submenu-icon" [class]="child.icon"></i>
+
+                <span class="submenu-content">
+                  <span class="submenu-label">
+                    {{ child.label }}
+                  </span>
+
+                  @if (child.description) {
+                    <small class="submenu-description">
+                      {{ child.description }}
+                    </small>
+                  }
+                </span>
+              </a>
+            }
+          </div>
+        }
+      }
+    }
+  </nav>
+</div>

@@ -1,0 +1,28 @@
+<div class="toast-container position-fixed top-0 end-0 p-3" aria-live="polite" aria-atomic="true">
+  @for (notification of notificationService.notifications();track notification.id) {
+    <div class="app-toast"
+      [class.toast-success]="notification.type === 'success'"
+      [class.toast-error]="notification.type === 'error'"
+      [class.toast-warning]="notification.type === 'warning'"
+      [class.toast-info]="notification.type === 'info'"
+      role="alert">
+      <div class="toast-icon">
+        <i class="bi" [class]="getIcon(notification.type)"></i>
+      </div>
+
+      <div class="toast-content">
+        <div class="toast-title">
+          {{ notification.title }}
+        </div>
+
+        <div class="toast-message">
+          {{ notification.message }}
+        </div>
+      </div>
+
+      <button type="button" class="toast-close" aria-label="Close notification" (click)="removeNotification(notification.id)">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  }
+</div>
