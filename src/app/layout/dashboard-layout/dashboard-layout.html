@@ -1,16 +1,14 @@
 <div class="app-layout">
   <app-navbar></app-navbar>
 
-  <div class="container-fluid">
-    <div class="row">
-      <aside class="col-md-2 p-0">
-        <app-sidebar></app-sidebar>
-      </aside>
+  <div class="app-body">
+    <aside class="app-sidebar">
+      <app-sidebar></app-sidebar>
+    </aside>
 
-      <main class="col-md-10 p-4 bg-body-tertiary">
-        <router-outlet></router-outlet>
-      </main>
-    </div>
+    <main class="app-content">
+      <router-outlet></router-outlet>
+    </main>
   </div>
 
   <app-footer></app-footer>

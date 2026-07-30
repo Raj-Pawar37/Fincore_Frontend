@@ -1,47 +1,70 @@
-<div class="sidebar bg-light border-end">
-  <div class="p-3 border-bottom">
-    <h6 class="mb-0 fw-bold">Main Menu</h6>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h6 class="sidebar-title">Main Menu</h6>
   </div>
 
-  <nav class="nav flex-column p-2">
-    <a
-      class="nav-link"
-      routerLink="/dashboard"
-      routerLinkActive="active"
-    >
-      Dashboard
-    </a>
+  <nav class="sidebar-nav">
+    @for (item of navigationItems; track item.label) {
 
-    <a class="nav-link" routerLink="/masters">
-      Masters
-    </a>
+      @if (item.route) {
+        <a
+          class="sidebar-link"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span class="sidebar-link-content">
+            <i class="bi sidebar-icon" [class]="item.icon"></i>
+            <span>{{ item.label }}</span>
+          </span>
+        </a>
+      }
 
-    <a class="nav-link" routerLink="/quotation">
-      Business Partners
-    </a>
+      @if (item.children) {
+        <button
+          type="button"
+          class="sidebar-link sidebar-menu-button"
+          [class.expanded]="openMenu === item.label"
+          (click)="toggleMenu(item.label)"
+        >
+          <span class="sidebar-link-content">
+            <i class="bi sidebar-icon" [class]="item.icon"></i>
+            <span>{{ item.label }}</span>
+          </span>
 
-    <a class="nav-link" routerLink="/employee">
-      Employee
-    </a>
+          <i
+            class="bi sidebar-arrow"
+            [class.bi-chevron-down]="openMenu !== item.label"
+            [class.bi-chevron-up]="openMenu === item.label"
+          ></i>
+        </button>
 
-    <a class="nav-link" routerLink="/purchase-requisition">
-      Purchase Requisition
-    </a>
+        @if (openMenu === item.label) {
+          <div class="sidebar-submenu">
+            @for (child of item.children; track child.label) {
+              <a
+                class="sidebar-submenu-link"
+                [routerLink]="child.route"
+                routerLinkActive="active"
+              >
+                <i class="bi sidebar-submenu-icon" [class]="child.icon"></i>
 
-    <a class="nav-link" routerLink="/warehouse">
-      Warehouse
-    </a>
+                <span class="submenu-content">
+                  <span class="submenu-label">
+                    {{ child.label }}
+                  </span>
 
-    <a class="nav-link" routerLink="/payments">
-      Payments
-    </a>
-
-    <a class="nav-link" routerLink="/revenue">
-      Revenue
-    </a>
-
-    <a class="nav-link" routerLink="/reports">
-      Reports
-    </a>
+                  @if (child.description) {
+                    <small class="submenu-description">
+                      {{ child.description }}
+                    </small>
+                  }
+                </span>
+              </a>
+            }
+          </div>
+        }
+      }
+    }
   </nav>
 </div>
