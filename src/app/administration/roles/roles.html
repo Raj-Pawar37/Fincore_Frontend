@@ -1,70 +1,44 @@
-<p>roles works!</p>
-<h1>Rolessss</h1>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">RoleName</th>
-      <th scope="col">RoleCode</th>
-      <th scope="col">RoleDescription</th>
-      <th scope="col">IsActive</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (e of roleData; track e.roleId || e.RoleId) {
-      <tr>
-        <th scope="row">{{ e.roleId || e.RoleId }}</th>
-        <td>{{ e.roleName || e.RoleName }}</td>
-        <td>{{ e.roleCode || e.RoleCode }}</td>
-        <td>{{ e.roleDescription || e.RoleDescription }}</td>
-        <td>{{ e.isActive !== undefined ? e.isActive : e.IsActive }}</td>
-        <td>
-          <!-- Bootstrap 5 native data attributes handle opening the modal automatically -->
-          <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal2" (click)="editRole(e)">Edit</button>
-          <button class="btn btn-danger btn-sm">Delete</button>
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
-
-<!-- Edit modal -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="roleForm" (ngSubmit)="updateRole()">
-          <div class="mb-3">
-            <label class="form-label">Role ID</label>
-            <input type="text" readonly class="form-control" formControlName="roleId">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role Name</label>
-            <input type="text" class="form-control" formControlName="roleName">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role Code</label>
-            <input type="text" class="form-control" formControlName="roleCode">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role Description</label>
-            <input type="text" class="form-control" formControlName="roleDescription">
-          </div>
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="activeCheck" formControlName="isActive">
-            <label class="form-check-label" for="activeCheck">Is Active</label>
-          </div>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Role</button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+<h1> Role Data </h1>
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Role ID</th>
+              <th scope="col">Role Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Role Code</th>
+              <th scope="col">Active Status</th>
+              <th scope="col" class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (element of dataSource; track element.roleId) {
+              <tr>
+                <td>{{ element.roleId }}</td>
+                <td>{{ element.roleName }}</td>
+                <td>{{ element.roleDescription }}</td>
+                <td>{{ element.roleCode }}</td>
+                <td>
+                  <span class="badge" [ngClass]="element.isActive ? 'bg-success' : 'bg-danger'">
+                    {{ element.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-sm btn-primary me-2">
+                    Edit
+                  </button>
+                  <button class="btn btn-sm btn-danger" >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            } 
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
