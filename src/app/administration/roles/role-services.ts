@@ -12,15 +12,19 @@ export class RoleServices {
     return this.http.get(ApiEndpoints.Roles.ReadAll);
   }
 
-  createRoleServices(data: any) {
-    return this.http.post(ApiEndpoints.Roles.Create, data);
-  }
-
   updateRoleServices(data: any) {
     return this.http.put(`${ApiEndpoints.Roles.Update}/${data.RoleId}`, data);
   }
 
-  deleteRoleServices(id: any) {
-    return this.http.delete(`${ApiEndpoints.Roles.Delete}/${id}`);
+  insertServices(data: any) {
+    return this.http.post(ApiEndpoints.Roles.Create, data);
+  }
+
+  EditServices(data: any) {
+    return this.http.put(`${ApiEndpoints.Roles.Update}/${data.RoleId}`, data);
+  }
+
+  DeleteService(id: number) {
+    return this.http.delete(`${ApiEndpoints.Roles.Update}/${id}`);
   }
 }

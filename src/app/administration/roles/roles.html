@@ -1,18 +1,16 @@
-<p>roles works!</p>
-<h1>Rolessss</h1>
+<h1>Role Data</h1>
 
-<!-- Button to trigger Insert Modal -->
+<!-- Button trigger modal -->
 <button
   type="button"
-  class="btn btn-success mb-3"
+  class="btn btn-primary"
   data-bs-toggle="modal"
   data-bs-target="#exampleModal"
-  (click)="resetForm()"
 >
-  Add New Role
+  Insert Data
 </button>
 
-<!-- Insert Modal -->
+<!-- Modal -->
 <div
   class="modal fade"
   id="exampleModal"
@@ -23,7 +21,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Role</h5>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
         <button
           type="button"
           class="btn-close"
@@ -31,101 +29,108 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">
-        <form [formGroup]="roleForm" (ngSubmit)="createRole()">
-          <div class="mb-3">
-            <label class="form-label">Role Name</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="roleName"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role Code</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="roleCode"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role Description</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="roleDescription"
-            />
-          </div>
-          <div class="mb-3 form-check">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="insertActiveCheck"
-              formControlName="isActive"
-            />
-            <label class="form-check-label" for="insertActiveCheck"
-              >Is Active</label
-            >
-          </div>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
-            Save Role
+
+      <form [formGroup]="RoleForm" (ngSubmit)="AddRole(RoleForm.value)">
+        <div class="modal-body">
+          Role Name
+          <input type="text" class="form-control" formControlName="RoleName" />
+
+          Role Description
+          <input
+            type="text"
+            class="form-control"
+            formControlName="RoleDescription"
+          />
+          Role Code
+          <input type="text" class="form-control" formControlName="RoleCode" />
+          Status
+          <select class="form-control" formControlName="IsActive">
+            <option [ngValue]="true">Active</option>
+            <option [ngValue]="false">Inactive</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-primary" value="insert" />
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
           </button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Role ID</th>
+              <th scope="col">Role Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Role Code</th>
+              <th scope="col">Active Status</th>
+              <th scope="col" class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (
+              element of dataSource;
+              track element.roleId ?? element.RoleId
+            ) {
+              <tr>
+                <td>{{ element.roleId ?? element.RoleId }}</td>
+                <td>{{ element.roleName ?? element.RoleName }}</td>
+                <td>
+                  {{ element.roleDescription ?? element.RoleDescription }}
+                </td>
+                <td>{{ element.roleCode ?? element.RoleCode }}</td>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="
+                      (element.isActive ?? element.IsActive)
+                        ? 'bg-success'
+                        : 'bg-danger'
+                    "
+                  >
+                    {{
+                      (element.isActive ?? element.IsActive)
+                        ? "Active"
+                        : "Inactive"
+                    }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <button
+                    class="btn btn-sm btn-primary me-2"
+                    (click)="Editbtn(element)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal2"
+                  >
+                    Edit
+                  </button>
+                  <button class="btn btn-sm btn-danger" (click)="Deletebtn(element.roleId)">Delete</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Data Table -->
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">RoleName</th>
-      <th scope="col">RoleCode</th>
-      <th scope="col">RoleDescription</th>
-      <th scope="col">IsActive</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (e of roleData; track e.roleId || e.RoleId) {
-      <tr>
-        <th scope="row">{{ e.roleId || e.RoleId }}</th>
-        <td>{{ e.roleName || e.RoleName }}</td>
-        <td>{{ e.roleCode || e.RoleCode }}</td>
-        <td>{{ e.roleDescription || e.RoleDescription }}</td>
-        <td>{{ e.isActive !== undefined ? e.isActive : e.IsActive }}</td>
-        <td>
-          <button
-            type="button"
-            class="btn btn-primary btn-sm me-2"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal2"
-            (click)="editRole(e)"
-          >
-            Edit
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger btn-sm"
-            (click)="deleteRole(e.roleId || e.RoleId)"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
-
-<!-- Edit modal -->
+<!-- Edit modal-->
+<!-- Modal -->
 <div
   class="modal fade"
   id="exampleModal2"
@@ -136,7 +141,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel2">Edit Role</h5>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
         <button
           type="button"
           class="btn-close"
@@ -144,60 +149,47 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">
-        <form [formGroup]="roleForm" (ngSubmit)="updateRole()">
-          <div class="mb-3">
-            <label class="form-label">Role ID</label>
-            <input
-              type="text"
-              readonly
-              class="form-control"
-              formControlName="roleId"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role Name</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="roleName"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role Code</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="roleCode"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role Description</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="roleDescription"
-            />
-          </div>
-          <div class="mb-3 form-check">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="activeCheck"
-              formControlName="isActive"
-            />
-            <label class="form-check-label" for="activeCheck">Is Active</label>
-          </div>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
-            Update Role
+
+      <form [formGroup]="RoleForm" (ngSubmit)="update(RoleForm.value)">
+        <input type="hidden" formControlName="RoleId" />
+
+        <div class="modal-body">
+          Role Name
+          <input type="text" class="form-control" formControlName="RoleName" />
+
+          Role Description
+          <input
+            type="text"
+            class="form-control"
+            formControlName="RoleDescription"
+          />
+          Role Code
+          <input type="text" class="form-control" formControlName="RoleCode" />
+          Status
+          <select class="form-control" formControlName="IsActive">
+            <option [ngValue]="true">Active</option>
+            <option [ngValue]="false">Inactive</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <input
+            type="submit"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+            value="insert"
+          />
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+
+            Close
           </button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

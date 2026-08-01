@@ -1,131 +1,105 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RoleServices } from './role-services';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { error } from 'console';
+declare var $: any;
 
 @Component({
   selector: 'app-roles',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './roles.html',
   styleUrl: './roles.css',
 })
 export class Roles implements OnInit {
-  roleData: any[] = [];
-
-  roleForm = new FormGroup({
-    roleId: new FormControl(''),
-    roleName: new FormControl(''),
-    roleCode: new FormControl(''),
-    roleDescription: new FormControl(''),
-    isActive: new FormControl(false),
-  });
-
+  dataSource: any;
   constructor(
     private roleServices: RoleServices,
     private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.getRoleTs();
+    this.getRole();
   }
 
-  getRoleTs() {
+  RoleForm = new FormGroup({
+    RoleId: new FormControl(0),
+    RoleName: new FormControl(''),
+    RoleDescription: new FormControl(''),
+    RoleCode: new FormControl(''),
+    IsActive: new FormControl(true),
+  });
+
+  getRole() {
     this.roleServices.getRoleServices().subscribe({
       next: (res: any) => {
-        this.roleData = res.data;
-        console.log('Fetched roles successfully:', this.roleData);
+        this.dataSource = res.data;
         this.cdr.detectChanges();
+        console.log(res.data);
       },
       error: (err) => {
-        console.error('Error fetching role data:', err);
+        console.log(err);
       },
     });
   }
 
-  editRole(data: any) {
-    console.log('Editing role data:', data);
-    this.roleForm.patchValue({
-      roleId: data.roleId || data.RoleId,
-      roleName: data.roleName || data.RoleName,
-      roleCode: data.roleCode || data.RoleCode,
-      roleDescription: data.roleDescription || data.RoleDescription,
-      isActive: data.isActive !== undefined ? data.isActive : data.IsActive,
+  AddRole(data: any) {
+    this.roleServices.insertServices(data).subscribe({
+      next: (res: any) => {
+        alert('Insert Done');
+        this.getRole();
+        console.log(data);
+        this.RoleForm.reset({ RoleId: 0, IsActive: true });
+        $('#exampleModal').modal('hide');
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
   }
 
-  resetForm() {
-    this.roleForm.reset({
-      roleId: '',
-      roleName: '',
-      roleCode: '',
-      roleDescription: '',
-      isActive: false,
+  Editbtn(data: any) {
+    alert(data);
+    console.log(data);
+
+    this.RoleForm.patchValue({
+      RoleName: data.roleName,
+      RoleCode: data.roleCode,
+      RoleDescription: data.roleDescription,
+      IsActive: data.isActive,
+      RoleId: data.roleId,
     });
   }
 
-  createRole() {
-    if (this.roleForm.valid) {
-      const formValue = this.roleForm.value;
-      const payload = {
-        RoleName: formValue.roleName,
-        RoleCode: formValue.roleCode,
-        RoleDescription: formValue.roleDescription,
-        IsActive: formValue.isActive,
-      };
-
-      console.log('Sending create payload:', payload);
-
-      this.roleServices.createRoleServices(payload).subscribe({
-        next: (res: any) => {
-          alert('Role saved successfully!');
-          this.getRoleTs(); // Refresh table data
-          this.roleForm.reset();
-        },
-        error: (err) => {
-          console.error('Error creating role:', err);
-        },
-      });
-    }
+  update(data: any) {
+    alert('upadte called');
+    console.log(data);
+    this.roleServices.EditServices(data).subscribe({
+      next: (res) => {
+        this.RoleForm.reset({ RoleId: 0, IsActive: true });
+        alert('update sucess');
+        $('#exampleModal2').modal('hide');
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
-  updateRole() {
-    if (this.roleForm.valid) {
-      const formValue = this.roleForm.value;
-      const payload = {
-        RoleId: formValue.roleId,
-        RoleName: formValue.roleName,
-        RoleCode: formValue.roleCode,
-        RoleDescription: formValue.roleDescription,
-        IsActive: formValue.isActive,
-      };
-
-      console.log('Sending update payload:', payload);
-
-      this.roleServices.updateRoleServices(payload).subscribe({
-        next: (res: any) => {
-          console.log('Updated successfully', res);
-          this.getRoleTs(); // Refresh table data
-        },
-        error: (err) => {
-          console.error('Error updating role:', err);
-        },
-      });
-    }
-  }
-
-  deleteRole(id: any) {
-    if (!id) return;
-
-    if (confirm('Are you sure you want to delete this role?')) {
-      this.roleServices.deleteRoleServices(id).subscribe({
-        next: (res) => {
-          alert('Deleted successfully');
-          this.getRoleTs(); // Refresh table data
-        },
-        error: (err) => {
-          console.error('Error deleting role:', err);
-        },
-      });
-    }
+  Deletebtn(id: number) {
+    alert(id);
+    this.roleServices.DeleteService(id).subscribe({
+      next: (res) => {
+        alert('Delete done');
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 }
