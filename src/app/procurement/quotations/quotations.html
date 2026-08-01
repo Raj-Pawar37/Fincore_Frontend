@@ -32,9 +32,12 @@
               <i class="bi bi-search"></i>
             </span>
 
-            <input type="text" class="form-control" placeholder="Search quotation number or vendor">
+            <input type="text" class="form-control" placeholder="Search quotation number or vendor" (input)="onSearchChanged($event.target.value)">
 
           </div>
+
+          <app-debounce-search placeholder="Search quotation number, RFQ or vendor" [delay]="500" (searchChanged)="onSearchChanged($event)"></app-debounce-search>
+
 
         </div>
 

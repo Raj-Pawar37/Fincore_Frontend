@@ -10,10 +10,11 @@ import { Modal } from 'bootstrap';
 import { CommonModule } from '@angular/common';
 import { PaginationChange } from '../../shared/components/pagination/pagination-interface';
 import { Pagination } from "../../shared/components/pagination/pagination";
+import { DebounceSearch } from "../../shared/components/debounce-search/debounce-search";
 
 @Component({
   selector: 'app-quotations',
-  imports: [ReactiveFormsModule, PageHeader, ConfirmModal, CommonModule, Pagination],
+  imports: [ReactiveFormsModule, PageHeader, ConfirmModal, CommonModule, Pagination, DebounceSearch],
   templateUrl: './quotations.html',
   styleUrl: './quotations.css',
 })
@@ -57,7 +58,7 @@ export class Quotations implements OnInit {
 
 
   // Pagination 
-  totalRecords : number = 0;
+  totalRecords: number = 0;
   paginationRequest: QuotationPaginationRequest = {
     vendorId: 1,
     pageNumber: 1,
@@ -99,7 +100,7 @@ export class Quotations implements OnInit {
       vendorId: this.vendorId
     };
 
-    this.rfqDropdownList = [ currentRfq, ...this.rfqDropdownList];
+    this.rfqDropdownList = [currentRfq, ...this.rfqDropdownList];
 
 
     this.quotationForm.patchValue({
@@ -219,6 +220,12 @@ export class Quotations implements OnInit {
     this.readAll();
   }
 
+  onSearchChanged(search: string): void {
+    this.paginationRequest.search = search;
+    this.paginationRequest.pageNumber = 1;
+    this.readAll();
+  }
+
 
 
   // Database/API functions
@@ -283,7 +290,7 @@ export class Quotations implements OnInit {
         this.isLoading.set(false);
         this.quotationList = res.data ?? [];
         this.totalRecords = res.totalNumberRecord ?? 0;
-        
+
       },
 
       error: (err) => {
