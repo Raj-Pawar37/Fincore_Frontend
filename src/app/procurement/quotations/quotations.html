@@ -16,6 +16,8 @@
 
   <!-- Quotation Table Card -->
 
+  <app-pagination [totalRecords]="totalRecords" (pageChanged)="onPageChanged($event)"> </app-pagination>
+
   <div class="card border-0 shadow-sm">
 
     <div class="card-header bg-white border-bottom py-3">
@@ -371,8 +373,8 @@
 
                 <option value="Draft">Draft</option>
                 <option value="Submitted">Submitted</option>
-                <option value="Accepted">Accepted</option>
-                <option value="Rejected">Rejected</option>
+                <!-- <option value="Accepted">Accepted</option>
+                <option value="Rejected">Rejected</option> -->
 
               </select>
 

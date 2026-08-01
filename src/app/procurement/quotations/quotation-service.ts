@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { ApiEndpoints } from '../../../api-endpoints';
 import { ApiResponse } from '../../core/models/api-response.interface';
 
-import { Quotation, QuotationCreateRequest, QuotationUpdateRequest, VendorRfqDropdown } from './quotation-interface';
+import { Quotation, QuotationCreateRequest, QuotationPaginationRequest, QuotationUpdateRequest, VendorRfqDropdown } from './quotation-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +21,15 @@ export class QuotationService {
     return this.http.put<ApiResponse<Quotation>>(ApiEndpoints.Quotation.Update, request);
   }
 
-  readAll(): Observable<ApiResponse<Quotation[]>> {
-    return this.http.get<ApiResponse<Quotation[]>>(ApiEndpoints.Quotation.ReadAll);
+  readAll(request: QuotationPaginationRequest): Observable<ApiResponse<Quotation[]>> {
+
+    const params = new HttpParams()
+      .set('VendorId', request.vendorId.toString())
+      .set('PageNumber', request.pageNumber.toString())
+      .set('PageSize', request.pageSize.toString())
+      .set('Search', request.search)
+      .set('Status', request.status);
+    return this.http.get<ApiResponse<Quotation[]>>(ApiEndpoints.Quotation.ReadAll, { params });
   }
 
   readById(quotationId: number): Observable<ApiResponse<Quotation>> {

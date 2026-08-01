@@ -1,17 +1,19 @@
 import { Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { QuotationService } from './quotation-service';
 import { NotificationService } from '../../shared/services/notification';
-import { Quotation, QuotationCreateRequest, QuotationUpdateRequest, VendorRfqDropdown } from './quotation-interface';
+import { Quotation, QuotationCreateRequest, QuotationPaginationRequest, QuotationUpdateRequest, VendorRfqDropdown } from './quotation-interface';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DateUtils } from '../../shared/utils/date-utils';
 import { PageHeader } from '../../shared/components/page-header/page-header';
 import { ConfirmModal } from '../../shared/components/confirm-modal/confirm-modal';
 import { Modal } from 'bootstrap';
 import { CommonModule } from '@angular/common';
+import { PaginationChange } from '../../shared/components/pagination/pagination-interface';
+import { Pagination } from "../../shared/components/pagination/pagination";
 
 @Component({
   selector: 'app-quotations',
-  imports: [ReactiveFormsModule, PageHeader, ConfirmModal, CommonModule],
+  imports: [ReactiveFormsModule, PageHeader, ConfirmModal, CommonModule, Pagination],
   templateUrl: './quotations.html',
   styleUrl: './quotations.css',
 })
@@ -52,6 +54,18 @@ export class Quotations implements OnInit {
     desc: new FormControl('')
 
   });
+
+
+  // Pagination 
+  totalRecords : number = 0;
+  paginationRequest: QuotationPaginationRequest = {
+    vendorId: 1,
+    pageNumber: 1,
+    pageSize: 10,
+    search: '',
+    status: ''
+  };
+
 
 
   ngOnInit() {
@@ -97,6 +111,7 @@ export class Quotations implements OnInit {
       status: data.status,
       desc: data.desc
     });
+
 
     this.quotationModalInstance ??= new Modal(this.quotationModalElement.nativeElement, { backdrop: 'static', keyboard: false });
     this.quotationModalInstance.show();
@@ -198,7 +213,11 @@ export class Quotations implements OnInit {
     this.isEditMode.set(false);
   }
 
-
+  onPageChanged(event: PaginationChange): void {
+    this.paginationRequest.pageNumber = event.pageNumber;
+    this.paginationRequest.pageSize = event.pageSize;
+    this.readAll();
+  }
 
 
 
@@ -259,10 +278,11 @@ export class Quotations implements OnInit {
   readAll() {
     this.isLoading.set(true);
 
-    this.quotationService.readAll().subscribe({
+    this.quotationService.readAll(this.paginationRequest).subscribe({
       next: (res) => {
         this.isLoading.set(false);
         this.quotationList = res.data ?? [];
+        this.totalRecords = res.totalNumberRecord ?? 0;
         
       },
 

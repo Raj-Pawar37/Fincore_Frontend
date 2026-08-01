@@ -1,0 +1,58 @@
+@if (totalRecords() > 0) {
+
+  <div class="pagination-container">
+
+    <div class="pagination-size">
+
+      <span class="text-muted"> Show </span>
+
+      <select class="form-select form-select-sm" [value]="pageSize()" (change)="onPageSizeChange($event)">
+        <option value="1">1</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+      </select>
+
+      <span class="text-muted"> records </span>
+    </div>
+
+
+    <div class="pagination-info text-muted">
+      Showing {{ startRecord() }} to {{ endRecord() }} of {{ totalRecords() }} records
+    </div>
+
+
+    <nav aria-label="Pagination">
+      <ul class="pagination pagination-sm mb-0">
+        <li class="page-item" [class.disabled]="pageNumber() === 1">
+
+          <button type="button" class="page-link" [disabled]="pageNumber() === 1" (click)="previousPage()">
+            Previous
+          </button>
+        </li>
+
+
+        @for ( page of pageNumbers(); track page) {
+
+          <li class="page-item" [class.active]=" page === pageNumber()">
+
+            <button type="button" class="page-link" (click)="goToPage(page)">
+              {{ page }}
+            </button>
+          </li>
+
+        }
+
+
+        <li class="page-item" [class.disabled]=" pageNumber() === totalPages()">
+
+          <button type="button" class="page-link" [disabled]=" pageNumber() === totalPages()" (click)="nextPage()">
+            Next
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+}

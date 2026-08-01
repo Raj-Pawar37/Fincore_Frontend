@@ -26,6 +26,15 @@ export interface Quotation {
 }
 
 
+export interface QuotationPaginationRequest {
+  vendorId: number;
+  pageNumber: number;
+  pageSize: number;
+  search: string;
+  status: string;
+}
+
+
 
 
 // Need to move this in RFQ 
