@@ -1,6 +1,88 @@
 <p>roles works!</p>
 <h1>Rolessss</h1>
 
+<!-- Button to trigger Insert Modal -->
+<button
+  type="button"
+  class="btn btn-success mb-3"
+  data-bs-toggle="modal"
+  data-bs-target="#exampleModal"
+  (click)="resetForm()"
+>
+  Add New Role
+</button>
+
+<!-- Insert Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Role</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="roleForm" (ngSubmit)="createRole()">
+          <div class="mb-3">
+            <label class="form-label">Role Name</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="roleName"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Role Code</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="roleCode"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Role Description</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="roleDescription"
+            />
+          </div>
+          <div class="mb-3 form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="insertActiveCheck"
+              formControlName="isActive"
+            />
+            <label class="form-check-label" for="insertActiveCheck"
+              >Is Active</label
+            >
+          </div>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+            Save Role
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Data Table -->
 <table class="table">
   <thead>
     <tr>
@@ -21,9 +103,22 @@
         <td>{{ e.roleDescription || e.RoleDescription }}</td>
         <td>{{ e.isActive !== undefined ? e.isActive : e.IsActive }}</td>
         <td>
-          <!-- Bootstrap 5 native data attributes handle opening the modal automatically -->
-          <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal2" (click)="editRole(e)">Edit</button>
-          <button class="btn btn-danger btn-sm">Delete</button>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm me-2"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal2"
+            (click)="editRole(e)"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="deleteRole(e.roleId || e.RoleId)"
+          >
+            Delete
+          </button>
         </td>
       </tr>
     }
@@ -31,40 +126,77 @@
 </table>
 
 <!-- Edit modal -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel2"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="exampleModalLabel2">Edit Role</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="roleForm" (ngSubmit)="updateRole()">
           <div class="mb-3">
             <label class="form-label">Role ID</label>
-            <input type="text" readonly class="form-control" formControlName="roleId">
+            <input
+              type="text"
+              readonly
+              class="form-control"
+              formControlName="roleId"
+            />
           </div>
           <div class="mb-3">
             <label class="form-label">Role Name</label>
-            <input type="text" class="form-control" formControlName="roleName">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="roleName"
+            />
           </div>
           <div class="mb-3">
             <label class="form-label">Role Code</label>
-            <input type="text" class="form-control" formControlName="roleCode">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="roleCode"
+            />
           </div>
           <div class="mb-3">
             <label class="form-label">Role Description</label>
-            <input type="text" class="form-control" formControlName="roleDescription">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="roleDescription"
+            />
           </div>
           <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="activeCheck" formControlName="isActive">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="activeCheck"
+              formControlName="isActive"
+            />
             <label class="form-check-label" for="activeCheck">Is Active</label>
           </div>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Role</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+            Update Role
+          </button>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
       </div>
     </div>
   </div>

@@ -17,12 +17,12 @@ export class Roles implements OnInit {
     roleName: new FormControl(''),
     roleCode: new FormControl(''),
     roleDescription: new FormControl(''),
-    isActive: new FormControl(false)
+    isActive: new FormControl(false),
   });
 
   constructor(
     private roleServices: RoleServices,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -34,37 +34,69 @@ export class Roles implements OnInit {
       next: (res: any) => {
         this.roleData = res.data;
         console.log('Fetched roles successfully:', this.roleData);
-        this.cdr.detectChanges(); 
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error fetching role data:', err);
-      }
+      },
     });
   }
 
   editRole(data: any) {
     console.log('Editing role data:', data);
-    
-    // Patch values into the form when Edit is clicked
     this.roleForm.patchValue({
       roleId: data.roleId || data.RoleId,
       roleName: data.roleName || data.RoleName,
       roleCode: data.roleCode || data.RoleCode,
       roleDescription: data.roleDescription || data.RoleDescription,
-      isActive: data.isActive !== undefined ? data.isActive : data.IsActive
+      isActive: data.isActive !== undefined ? data.isActive : data.IsActive,
     });
   }
 
- updateRole() {
+  resetForm() {
+    this.roleForm.reset({
+      roleId: '',
+      roleName: '',
+      roleCode: '',
+      roleDescription: '',
+      isActive: false,
+    });
+  }
+
+  createRole() {
     if (this.roleForm.valid) {
-      // Map camelCase form values to PascalCase to match your C# backend model
+      const formValue = this.roleForm.value;
+      const payload = {
+        RoleName: formValue.roleName,
+        RoleCode: formValue.roleCode,
+        RoleDescription: formValue.roleDescription,
+        IsActive: formValue.isActive,
+      };
+
+      console.log('Sending create payload:', payload);
+
+      this.roleServices.createRoleServices(payload).subscribe({
+        next: (res: any) => {
+          alert('Role saved successfully!');
+          this.getRoleTs(); // Refresh table data
+          this.roleForm.reset();
+        },
+        error: (err) => {
+          console.error('Error creating role:', err);
+        },
+      });
+    }
+  }
+
+  updateRole() {
+    if (this.roleForm.valid) {
       const formValue = this.roleForm.value;
       const payload = {
         RoleId: formValue.roleId,
         RoleName: formValue.roleName,
         RoleCode: formValue.roleCode,
         RoleDescription: formValue.roleDescription,
-        IsActive: formValue.isActive
+        IsActive: formValue.isActive,
       };
 
       console.log('Sending update payload:', payload);
@@ -72,11 +104,27 @@ export class Roles implements OnInit {
       this.roleServices.updateRoleServices(payload).subscribe({
         next: (res: any) => {
           console.log('Updated successfully', res);
-          this.getRoleTs(); // Refresh the table data
+          this.getRoleTs(); // Refresh table data
         },
         error: (err) => {
           console.error('Error updating role:', err);
-        }
+        },
+      });
+    }
+  }
+
+  deleteRole(id: any) {
+    if (!id) return;
+
+    if (confirm('Are you sure you want to delete this role?')) {
+      this.roleServices.deleteRoleServices(id).subscribe({
+        next: (res) => {
+          alert('Deleted successfully');
+          this.getRoleTs(); // Refresh table data
+        },
+        error: (err) => {
+          console.error('Error deleting role:', err);
+        },
       });
     }
   }
