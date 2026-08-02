@@ -30,6 +30,15 @@ export const ApiEndpoints = {
     ReadByRfqId: `${BASE_URL}/quotation`
   },
 
+  QuotationItem: {
+    Create: `${BASE_URL}/quoatationItem`,
+    Update: `${BASE_URL}/quoatationItem`,
+    Delete: `${BASE_URL}/quoatationItem`,
+    ReadById: `${BASE_URL}/quoatationItem`,
+    ReadAll: `${BASE_URL}/quoatationItem`,
+    ReadByRfqId: `${BASE_URL}/quoatationItem`
+  },
+
   RFQ: {
     Create: `${BASE_URL}/rfqs`,
     Update: `${BASE_URL}/rfqs`,

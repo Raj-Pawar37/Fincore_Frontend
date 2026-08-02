@@ -11,10 +11,11 @@ import { CommonModule } from '@angular/common';
 import { PaginationChange } from '../../shared/components/pagination/pagination-interface';
 import { Pagination } from "../../shared/components/pagination/pagination";
 import { DebounceSearch } from "../../shared/components/debounce-search/debounce-search";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-quotations',
-  imports: [ReactiveFormsModule, PageHeader, ConfirmModal, CommonModule, Pagination, DebounceSearch],
+  imports: [ReactiveFormsModule, PageHeader, ConfirmModal, CommonModule, Pagination, DebounceSearch, RouterLink],
   templateUrl: './quotations.html',
   styleUrl: './quotations.css',
 })

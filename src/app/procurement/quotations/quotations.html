@@ -152,8 +152,10 @@
 
               <td>
 
-                <div class="fw-semibold">
-                  {{ quotation.quotationNumber }}
+                <div class="fw-semibold" >
+                  <a [routerLink]="['/procurement/quotations',quotation.quotationId]">
+                    {{ quotation.quotationNumber }}
+                  </a>
                 </div>
 
                 @if (quotation.desc) {
