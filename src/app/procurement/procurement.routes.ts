@@ -11,11 +11,11 @@ export const procurementRoutes: Routes = [
   },
   {
     path: 'quotations',
-    loadComponent: () => import('./quotations/quotations').then(component => component.Quotations),
+    loadComponent: () => import('./quotations/quotation').then(component => component.Quotations),
   },
   {
     path: 'quotations/:id',
-    loadComponent : () => import('./quotations/quoatation-detail/quoatation-detail').then(c=> c.QuoatationDetail)
+    loadComponent : () => import('./quotations/quotation-detail/quotation-detail').then(c=> c.QuoatationDetail)
   },
   {
     path: 'quotation-comparison',

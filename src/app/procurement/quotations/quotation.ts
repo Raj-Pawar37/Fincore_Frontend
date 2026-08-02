@@ -14,10 +14,10 @@ import { DebounceSearch } from "../../shared/components/debounce-search/debounce
 import { RouterLink } from "@angular/router";
 
 @Component({
-  selector: 'app-quotations',
+  selector: 'app-quotation',
   imports: [ReactiveFormsModule, PageHeader, ConfirmModal, CommonModule, Pagination, DebounceSearch, RouterLink],
-  templateUrl: './quotations.html',
-  styleUrl: './quotations.css',
+  templateUrl: './quotation.html',
+  styleUrl: './quotation.css',
 })
 export class Quotations implements OnInit {
 
