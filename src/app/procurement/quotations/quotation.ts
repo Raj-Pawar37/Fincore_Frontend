@@ -40,7 +40,7 @@ export class Quotations implements OnInit {
   @ViewChild(ConfirmModal) confirmModal!: ConfirmModal;
   private quotationModalInstance?: Modal;
 
-  selectedQuotationId = 0;
+
   quotationList: Quotation[] = [];
   rfqDropdownList: VendorRfqDropdown[] = [];
 
@@ -125,17 +125,14 @@ export class Quotations implements OnInit {
   }
 
   openDeleteModal(data: Quotation): void {
-    this.selectedQuotationId = data.quotationId;
-    this.confirmModal.open('Quotation', data.quotationNumber);
+
+    this.confirmModal.open('Quotation', data.quotationNumber,
+      () => this.delete(data.quotationId)
+    );
+
   }
 
-  confirmDelete(): void {
-    if (this.selectedQuotationId <= 0) {
-      return;
-    }
 
-    this.delete(this.selectedQuotationId);
-  }
 
 
 

@@ -1,0 +1,41 @@
+<div class="position-relative">
+
+  <div class="input-group">
+
+    <input
+      type="text"
+      class="form-control"
+      autocomplete="off"
+      [formControl]="searchControl"
+      [placeholder]="placeholder()"
+      (focus)="onFocus()">
+
+    <span class="input-group-text bg-white">
+      <i class="bi bi-chevron-down"></i>
+    </span>
+
+  </div>
+
+
+  @if (showDropdown() && items().length > 0) {
+
+    <div class="dropdown-menu show w-100 shadow-sm">
+
+      @for (item of items(); track item.rfqItemId) {
+
+        <div
+          class="dropdown-item"
+          role="button"
+          (click)="selectItem(item)">
+
+          {{ item[displayKey()] }}
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</div>

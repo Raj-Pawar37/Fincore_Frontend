@@ -1,1 +1,119 @@
 <p>quoatation-detail works!</p>
+
+<div class="d-flex justify-content-end mb-3">
+    <button type="button" class="btn btn-primary" (click)="openCreateModal()">
+        Add Item
+    </button>
+</div>
+
+
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Tax</th>
+                <th>Discount</th>
+                <th>Sub Total</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @for (item of quoDetailList(); track item.quotationItemId; let i = $index) {
+            <tr>
+                <td>{{ i + 1 }}</td>
+
+                <td> {{ item.itemName || '-' }} </td>
+                <td> {{ item.quantity }} </td>
+                <td> ₹{{ item.unitPrice }} </td>
+                <td> ₹{{ item.tax }} </td>
+                <td> ₹{{ item.discount }} </td>
+                <td> ₹{{ item.subTotal }} </td>
+                <td class="fw-semibold"> ₹{{ item.totalAmount }} </td>
+                <td> {{ item.status }} </td>
+                <td>
+                    <button (click)="openEditModal(item)">Edit</button>
+                    <button (click)="openDeleteModal(item)">Delete</button>
+                </td>
+            </tr>
+            }
+
+            @if (quoDetailList().length === 0) {
+            <tr>
+                <td colspan="9" class="text-center text-muted py-3"> No quotation items found. </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="modal fade" #quotationItemModal tabindex="-1" id="quotationItemModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    @if (isEditMode()) { Edit Quotation Item}
+                    @else { Add Quotation Item }
+                </h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal"> </button>
+            </div>
+
+            <form [formGroup]="quotationDetailFG">
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label"> RFQ Item </label>
+                        <app-debounce-dropdown [items]="rfqItemDropdownList()" [selectedText]="selectedRfqItemName()"
+                            (searchChanged)="onRfqItemSearch($event)" (itemSelected)="onRfqItemSelected($event)">
+                        </app-debounce-dropdown>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"> Quantity </label>
+                        <input type="number" class="form-control" [formControl]="quotationDetailFG.controls.quantity">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"> Unit Price </label>
+                        <input type="number" class="form-control" [formControl]="quotationDetailFG.controls.unitPrice">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"> Tax </label>
+                        <input type="number" class="form-control" [formControl]="quotationDetailFG.controls.tax">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"> Discount </label>
+                        <input type="number" class="form-control" [formControl]="quotationDetailFG.controls.discount">
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancel </button>
+
+                    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()" (click)="onSubmit()">
+                        @if (isEditMode()) { Update }
+                        @else { Save }
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<app-confirm-modal></app-confirm-modal>

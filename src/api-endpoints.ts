@@ -31,12 +31,12 @@ export const ApiEndpoints = {
   },
 
   QuotationItem: {
-    Create: `${BASE_URL}/quoatationItem`,
-    Update: `${BASE_URL}/quoatationItem`,
-    Delete: `${BASE_URL}/quoatationItem`,
-    ReadById: `${BASE_URL}/quoatationItem`,
-    ReadAll: `${BASE_URL}/quoatationItem`,
-    ReadByRfqId: `${BASE_URL}/quoatationItem`
+    Create: `${BASE_URL}/quotationItem`,
+    Update: `${BASE_URL}/quotationItem`,
+    Delete: `${BASE_URL}/quotationItem`,
+    ReadById: `${BASE_URL}/quotationItem`,
+    ReadAll: `${BASE_URL}/quotationItem`,
+    ReadByQuotationId: `${BASE_URL}/quotationItem/quotation`
   },
 
   RFQ: {
@@ -46,6 +46,10 @@ export const ApiEndpoints = {
     ReadById: `${BASE_URL}/rfqs`,
     ReadAll: `${BASE_URL}/rfqs`,
     dropdown: `${BASE_URL}/rfqs/dropdown`
+  },
+
+  RFQItem: {
+    ReadByRFQId: `${BASE_URL}/rfqItems/ReadByRFQId`,
   },
 
 

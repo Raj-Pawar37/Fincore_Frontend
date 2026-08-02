@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Modal } from 'bootstrap';
 
 @Component({
@@ -9,10 +9,10 @@ import { Modal } from 'bootstrap';
 })
 export class ConfirmModal {
 
-   // Object references
-
+  // Object references
   @ViewChild('deleteModal')
   deleteModalElement!: ElementRef<HTMLElement>;
+
   private modalInstance?: Modal;
 
 
@@ -20,20 +20,24 @@ export class ConfirmModal {
   title = '';
   name = '';
 
-
-  // Output events
-
-  @Output()
-  confirmed = new EventEmitter<void>();
+  private deleteAction?: () => void;
 
 
   // Public functions
 
-  open(title: string, name: string): void {
+  open( title: string, name: string, deleteAction: () => void ): void {
+
     this.title = title;
     this.name = name;
+    this.deleteAction = deleteAction;
 
-    this.modalInstance ??= new Modal(this.deleteModalElement.nativeElement, { backdrop: 'static', keyboard: false});
+    this.modalInstance ??= new Modal( this.deleteModalElement.nativeElement,
+      {
+        backdrop: 'static',
+        keyboard: false
+      }
+    );
+
     this.modalInstance.show();
   }
 
@@ -44,9 +48,7 @@ export class ConfirmModal {
 
 
   confirmDelete(): void {
-    this.confirmed.emit();
+    this.deleteAction?.();
     this.close();
   }
-
-
 }
