@@ -28,15 +28,11 @@
 
           <div class="input-group">
 
-            <span class="input-group-text bg-white">
-              <i class="bi bi-search"></i>
-            </span>
-
-            <input type="text" class="form-control" placeholder="Search quotation number or vendor" (input)="onSearchChanged($event.target.value)">
+            <app-debounce-search placeholder="Search quotation number, RFQ or vendor" [delay]="500"
+              (searchChanged)="onSearchChanged($event)"></app-debounce-search>
 
           </div>
 
-          <app-debounce-search placeholder="Search quotation number, RFQ or vendor" [delay]="500" (searchChanged)="onSearchChanged($event)"></app-debounce-search>
 
 
         </div>
@@ -152,7 +148,7 @@
 
               <td>
 
-                <div class="fw-semibold" >
+                <div class="fw-semibold">
                   <a [routerLink]="['/procurement/quotations',quotation.quotationId]">
                     {{ quotation.quotationNumber }}
                   </a>
@@ -190,10 +186,10 @@
 
 
               <td>
-                <span class="badge rounded-pill" [class.text-bg-secondary]= " quotation.status === 'Draft'" 
-                      [class.text-bg-info] = " quotation.status === 'Submitted'" 
-                      [class.text-bg-success] = "quotation.status === 'Accepted'" 
-                      [class.text-bg-danger]= " quotation.status === 'Rejected'">
+                <span class="badge rounded-pill" [class.text-bg-secondary]=" quotation.status === 'Draft'"
+                  [class.text-bg-info]=" quotation.status === 'Submitted'"
+                  [class.text-bg-success]="quotation.status === 'Accepted'"
+                  [class.text-bg-danger]=" quotation.status === 'Rejected'">
                   {{ quotation.status }}
                 </span>
               </td>
@@ -450,3 +446,4 @@
 
 
 
+<app-confirm-modal></app-confirm-modal>

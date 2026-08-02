@@ -7,10 +7,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Modal } from 'bootstrap';
 import { ConfirmModal } from '../../../shared/components/confirm-modal/confirm-modal';
 import { DebounceDropdown } from "../../../shared/components/debounce-dropdown/debounce-dropdown";
+import { PageHeader } from "../../../shared/components/page-header/page-header";
+import { QuotationService } from '../quotation-service';
+import { Quotation } from '../quotation-interface';
 
 @Component({
   selector: 'app-quotation-detail',
-  imports: [ReactiveFormsModule, ConfirmModal, DebounceDropdown],
+  imports: [ReactiveFormsModule, ConfirmModal, DebounceDropdown, PageHeader],
   templateUrl: './quotation-detail.html',
   styleUrl: './quotation-detail.css',
 })
@@ -20,12 +23,13 @@ export class QuoatationDetail implements OnInit {
   // Flags 
   isLoading = signal(true);
   isSubmitting = signal(false);
-  isEditMode = signal(true);
+  isEditMode = signal(false);
 
 
   // Services 
   notificationServie = inject(NotificationService);
   quoDetailService = inject(QuoatationDetailService)
+  quoService = inject(QuotationService)
   route = inject(ActivatedRoute)
   @ViewChild(ConfirmModal) confirmModal!: ConfirmModal;
 
@@ -49,7 +53,7 @@ export class QuoatationDetail implements OnInit {
 
   // Data
   quotationId: number = 0
-  rfqId = 8;
+  quotation: Quotation | null = null;
   quoDetailList = signal<QuotationDetailItem[]>([]);
   rfqItemDropdownList = signal<RfqItem[]>([]);
   selectedRfqItemName = signal('');
@@ -57,8 +61,8 @@ export class QuoatationDetail implements OnInit {
   ngOnInit(): void {
     this.quotationId = Number(this.route.snapshot.paramMap.get('id'));
     this.readAllDTO.quotationId = this.quotationId
-    this.ReadAll()
-    this.onRfqItemSearch("");
+    this.ReadbyQuotationId();
+    this.ReadAll();
   }
 
   // Event Handlers 
@@ -77,7 +81,7 @@ export class QuoatationDetail implements OnInit {
 
     this.quotationDetailFG.patchValue({
       quotationItemId: item.quotationItemId ?? 0,
-      quotationId: this.quotationId,
+      quotationId: item.quotationItemId ?? 0,
       rfqItemId: item.rfqItemId ?? 0,
       quantity: item.quantity ?? 0,
       unitPrice: item.unitPrice ?? 0,
@@ -100,13 +104,14 @@ export class QuoatationDetail implements OnInit {
   onSubmit() {
     if (!this.quotationDetailFG.valid) {
       this.quotationDetailFG.markAllAsTouched();
-      this.notificationServie.warning("Please fill the required Fileds")
+      this.notificationServie.warning("Please fill the required Fileds");
+      return;
     }
     this.isSubmitting.set(true);
     var data: QuotationDetailUpdateRequestDTO = {
       quotationItemId: this.quotationDetailFG.controls.quotationItemId.value ?? 0,
       isActive: this.quotationDetailFG.controls.isActive.value ?? 0,
-      quotationId: this.quotationDetailFG.controls.quotationId.value ?? 0,
+      quotationId: this.quotationId ?? 0,
       rfqItemId: this.quotationDetailFG.controls.rfqItemId.value ?? 0,
       quantity: this.quotationDetailFG.controls.quantity.value ?? 0,
       unitPrice: this.quotationDetailFG.controls.unitPrice.value ?? 0,
@@ -127,7 +132,7 @@ export class QuoatationDetail implements OnInit {
 
   // Helper Fucntion 
   resetForm() {
-    this.quotationDetailFG.patchValue({
+    this.quotationDetailFG.reset({
       quotationItemId: 0,
       isActive: 1,
       quotationId: this.quotationId,
@@ -143,7 +148,7 @@ export class QuoatationDetail implements OnInit {
   onRfqItemSearch(searchText: string): void {
 
     const request: RfqItemDropdownRequest = {
-      rfqId: this.rfqId,
+      rfqId: this.quotation?.rfqId ?? 0,
       searchText: searchText
     };
 
@@ -239,12 +244,32 @@ export class QuoatationDetail implements OnInit {
   ReadAll() {
     this.quoDetailService.ReadByQuoatationId(this.readAllDTO).subscribe({
       next: res => {
-
+        this.isLoading.set(false)
         if (!res.success) {
           this.notificationServie.warning(res.message || "unable to Fetch Quoatation Detail ")
           return
         }
         this.quoDetailList.set(res.data ?? []);
+
+      },
+      error: err => {
+        this.isLoading.set(false)
+        this.notificationServie.success(err?.error?.message || "Something went wrong")
+      }
+    })
+  }
+
+  ReadbyQuotationId() {
+    this.quoService.readById(this.quotationId).subscribe({
+      next: res => {
+
+        if (!res.success) {
+          this.notificationServie.warning(res.message || "unable to Fetch Quoatation")
+          return
+        }
+
+        this.quotation = res.data ?? null;
+        this.onRfqItemSearch('');
 
       },
       error: err => {

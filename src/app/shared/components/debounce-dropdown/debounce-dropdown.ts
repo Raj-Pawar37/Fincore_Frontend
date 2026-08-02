@@ -1,13 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  effect,
-  inject,
-  input,
-  output,
-  signal
-} from '@angular/core';
-
+import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -48,10 +39,7 @@ export class DebounceDropdown {
 
     // Patch selected value during edit
     effect(() => {
-      this.searchControl.setValue(
-        this.selectedText(),
-        { emitEvent: false }
-      );
+      this.searchControl.setValue( this.selectedText(), { emitEvent: false });
     });
 
 
@@ -65,9 +53,7 @@ export class DebounceDropdown {
       .subscribe(value => {
 
         const searchText = value?.trim() ?? '';
-
         this.showDropdown.set(true);
-
         this.searchChanged.emit(searchText);
       });
   }
@@ -75,13 +61,8 @@ export class DebounceDropdown {
 
   selectItem(item: any): void {
 
-    this.searchControl.setValue(
-      item[this.displayKey()],
-      { emitEvent: false }
-    );
-
+    this.searchControl.setValue(item[this.displayKey()], { emitEvent: false });
     this.itemSelected.emit(item);
-
     this.showDropdown.set(false);
   }
 
@@ -94,11 +75,7 @@ export class DebounceDropdown {
 
 
   clear(): void {
-    this.searchControl.setValue(
-      '',
-      { emitEvent: false }
-    );
-
+    this.searchControl.setValue('', { emitEvent: false });
     this.showDropdown.set(false);
   }
 }
