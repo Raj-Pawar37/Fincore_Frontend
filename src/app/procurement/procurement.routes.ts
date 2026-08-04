@@ -15,7 +15,7 @@ export const procurementRoutes: Routes = [
   },
   {
     path: 'quotations/:id',
-    loadComponent : () => import('./quotations/quotation-detail/quotation-detail').then(c=> c.QuoatationDetail)
+    loadComponent: () => import('./quotations/quotation-detail/quotation-detail').then(c => c.QuoatationDetail)
   },
   {
     path: 'quotation-comparison',
@@ -24,6 +24,10 @@ export const procurementRoutes: Routes = [
   {
     path: 'purchase-orders',
     loadComponent: () => import('./purchase-orders/purchase-orders').then(component => component.PurchaseOrders),
+  },
+  {
+    path: 'purchase-orders/:id',
+    loadComponent: () => import('./purchase-orders/purchase-order-detail/purchase-order-detail').then(c => c.PurchaseOrderDetail)
   },
   {
     path: 'goods-receipts',

@@ -8,10 +8,11 @@ import { Modal } from 'bootstrap';
 import { PageHeader } from "../../shared/components/page-header/page-header";
 import { DebounceDropdown } from "../../shared/components/debounce-dropdown/debounce-dropdown";
 import { ConfirmModal } from "../../shared/components/confirm-modal/confirm-modal";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-purchase-orders',
-  imports: [ReactiveFormsModule, CommonModule, PageHeader, DebounceDropdown, ConfirmModal],
+  imports: [ReactiveFormsModule, CommonModule, PageHeader, DebounceDropdown, ConfirmModal, RouterLink],
   templateUrl: './purchase-orders.html',
   styleUrl: './purchase-orders.css',
 })

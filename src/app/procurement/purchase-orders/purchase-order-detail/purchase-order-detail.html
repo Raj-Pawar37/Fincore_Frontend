@@ -1,6 +1,6 @@
-<app-page-header [title]="'Purchase Order'">
+<app-page-header [title]="'Purchase Order Detail'">
 
-    <button type="button" class="btn btn-primary" (click)="openCreateForm()">
+    <button type="button" class="btn btn-primary" (click)="OpenCreateForm()">
         Add Item
     </button>
 
@@ -32,34 +32,37 @@
             <tr>
                 <th>#</th>
 
-                <th>PO Name</th>
                 <th>Quoatation</th>
-                <th>vendor Name</th>
+                <th>Item Name</th>
 
-                <th>Amount</th>
-                <th>Status </th>
+                <th>Unit Price</th>
+                <th>Tax</th>
+                <th>Discount</th>
+                <th>Qty</th>
+
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
 
         <tbody>
 
-            @for (item of poList(); track item.purchaseOrderId; let i = $index) {
+            @for (item of poDetail(); track item.purchaseOrderId; let i = $index) {
             <tr>
                 <td>{{ i + 1 }}</td>
 
-                <td>
-                    <a [routerLink]="['/procurement/purchase-orders', item.purchaseOrderId]">
-                        {{ item.poNumber }}
-                    </a>
-                </td>
-                <td> {{ item.quotationNumber }} </td>
-                <td> {{ item.vendorName }} </td>
+                <td> {{ item.quotationItemId }} </td>
+                <td> {{ item.itemName }} </td>
 
-                <td> ₹{{ item.totalAmount }} </td>
+                <td> {{ item.unitPrice }} </td>
+                <td> {{ item.tax }} </td>
+                <td> {{ item.discount }} </td>
+                <td> {{ item.qty }} </td>
+
                 <td> {{ item.status }} </td>
                 <td class="text-center">
-                    @if ( item?.status === 'Draft' || item?.status === 'Reviewed') {
+                    <!-- @if ( item?.status === 'Draft' || item?.status === 'Reviewed') { -->
+                    @if ( 1 == 1) {
                     <div class="btn-group btn-group-sm">
                         <button type="button" class="btn btn-outline-primary" title="Edit" (click)="OpenEditForm(item)">
                             <i class="bi bi-pencil-square"></i>
@@ -82,7 +85,7 @@
             </tr>
             }
 
-            @if (poList().length === 0) {
+            @if (poDetail().length === 0) {
             <tr>
                 <td colspan="10" class="text-center text-muted py-3"> No quotation items found. </td>
             </tr>
@@ -95,7 +98,7 @@
 
 
 
-<div class="modal fade" #purchaseOrderModal tabindex="-1" id="purchaseOrderModal">
+<div class="modal fade" #purchaseOrderDetailModal tabindex="-1" id="purchaseOrderDetailModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -108,7 +111,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"> </button>
             </div>
 
-            <form [formGroup]="poForm">
+            <form [formGroup]="poDetailForm">
                 <div class="modal-body">
 
                     <div class="mb-3">
@@ -117,21 +120,34 @@
                             (searchChanged)="onRfqItemSearch($event)" (itemSelected)="onRfqItemSelected($event)">
                         </app-debounce-dropdown> -->
 
-                        <input type="number" class="form-control" [formControl]="poForm.controls.quotationId">
+                        <input type="number" class="form-control" [formControl]="poDetailForm.controls.quotationItemId">
 
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label"> Po Number </label>
-                        <input type="number" class="form-control" [formControl]="poForm.controls.poNumber">
+                        <input type="number" class="form-control" [formControl]="poDetailForm.controls.itemName">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label"> Vendor </label>
-                        <input type="number" class="form-control" [formControl]="poForm.controls.vendorId">
+                        <label class="form-label"> Po Number </label>
+                        <input type="number" class="form-control" [formControl]="poDetailForm.controls.unitPrice">
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label"> Po Number </label>
+                        <input type="number" class="form-control" [formControl]="poDetailForm.controls.tax">
+                    </div>
 
+                    <div class="mb-3">
+                        <label class="form-label"> Po Number </label>
+                        <input type="number" class="form-control" [formControl]="poDetailForm.controls.discount">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"> Po Number </label>
+                        <input type="number" class="form-control" [formControl]="poDetailForm.controls.qty">
+                    </div>
 
                 </div>
 
