@@ -49,6 +49,16 @@ export const ApiEndpoints = {
     dropdown: `${BASE_URL}/rfqs/dropdown`
   },
 
+  PurchaseOrder: {
+    Create: `${BASE_URL}/purchaseOrder`,
+    Update: `${BASE_URL}/purchaseOrder`,
+    Delete: `${BASE_URL}/purchaseOrder`,
+    ReadById: `${BASE_URL}/purchaseOrder`,
+    ReadAll: `${BASE_URL}/purchaseOrder/GetAllPurchaseOrders`,
+    Status: `${BASE_URL}/purchaseOrder/Status`,
+    dropdown: `${BASE_URL}/purchaseOrder/dropdown`
+  },
+
   RFQItem: {
     ReadByRFQId: `${BASE_URL}/rfqItems/ReadByRFQId`,
   },
