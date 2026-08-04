@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { ApiEndpoints } from '../../../api-endpoints';
 import { ApiResponse } from '../../core/models/api-response.interface';
 
-import { Quotation, QuotationCreateRequest, QuotationPaginationRequest, QuotationUpdateRequest, VendorRfqDropdown } from './quotation-interface';
+import { Quotation, QuotationComparisonResponse, QuotationCreateRequest, QuotationPaginationRequest, QuotationUpdateRequest, VendorRfqDropdown } from './quotation-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -52,5 +52,9 @@ export class QuotationService {
     return this.http.get<ApiResponse<VendorRfqDropdown[]>>(`${ApiEndpoints.RFQ.dropdown}`, { params });
   }
 
+
+  readComparison(rfqId: number): Observable<ApiResponse<QuotationComparisonResponse>> {
+    return this.http.get<ApiResponse<QuotationComparisonResponse>>(`${ApiEndpoints.Quotation.getQuotationComparsion}/${rfqId}`);
+  }
 
 }

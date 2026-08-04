@@ -35,6 +35,42 @@ export interface QuotationPaginationRequest {
 }
 
 
+export interface QuotationComparisonResponse {
+  rfqId: number;
+  rfqNumber: string;
+  title: string;
+  closingDate: string;
+  status: string;
+  items: QuotationComparisonApiItem[];
+}
+
+export interface QuotationComparisonApiItem {
+  rfqItemId: number;
+  itemName: string;
+  requiredQuantity: number;
+
+  quotationItemId: number;
+  quotationId: number;
+  quotationNumber: string;
+
+  vendorId: number;
+  vendorName: string;
+
+  quantity: number;
+  unitPrice: number;
+  tax: number;
+  discount: number;
+  totalAmount: number;
+
+  quotationStatus: string;
+  itemStatus: string;
+}
+
+
+
+
+
+
 
 
 // Need to move this in RFQ 
@@ -46,3 +82,6 @@ export interface VendorRfqDropdown {
   rfqNumber: string;
   rfqTitle: string | null;
 }
+
+
+

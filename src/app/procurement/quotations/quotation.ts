@@ -21,7 +21,7 @@ import { RouterLink } from "@angular/router";
 })
 export class Quotations implements OnInit {
 
-  vendorId = 1; // temporarily; later take from auth/JWT
+  vendorId = 3; // temporarily; later take from auth/JWT
 
   // Flags
   isLoading = signal(false);
@@ -61,7 +61,7 @@ export class Quotations implements OnInit {
   // Pagination 
   totalRecords: number = 0;
   paginationRequest: QuotationPaginationRequest = {
-    vendorId: 1,
+    vendorId: 3,
     pageNumber: 1,
     pageSize: 10,
     search: '',

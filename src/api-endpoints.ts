@@ -27,7 +27,8 @@ export const ApiEndpoints = {
     Delete: `${BASE_URL}/quotation`,
     ReadById: `${BASE_URL}/quotation`,
     ReadAll: `${BASE_URL}/quotation`,
-    ReadByRfqId: `${BASE_URL}/quotation`
+    ReadByRfqId: `${BASE_URL}/quotation`,
+    getQuotationComparsion: `${BASE_URL}/quotation/getQuotationComparsion`
   },
 
   QuotationItem: {

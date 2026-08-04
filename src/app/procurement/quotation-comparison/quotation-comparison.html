@@ -1,1 +1,235 @@
-<p>quotation-comparison works!</p>
+<!-- Heading -->
+<div class="mb-3">
+    <h4>Quotation Comparison</h4>
+
+    <p class="text-muted mb-0">
+        Compare quotations item-wise and select the best quotation for each item.
+    </p>
+</div>
+
+
+<!-- RFQ Filter -->
+<div class="row mb-4">
+
+    <div class="col-md-4">
+
+        <label class="form-label fw-bold"> Select RFQ </label>
+
+        <select class="form-select" [(ngModel)]="selectedRFQId" (change)="onRFQChange()">
+            @for (rfq of rfqList(); track rfq.rfqId) {
+            <option [value]="rfq.rfqId">
+                {{ rfq.rfqNumber }} - {{ rfq.rfqTitle }}
+            </option>
+            }
+        </select>
+    </div>
+</div>
+
+
+<!-- RFQ Information -->
+<div class="row mb-3">
+
+    <div class="col-md-3">
+        <label class="fw-bold"> RFQ Number </label>
+        <p class="mb-0"> RFQ-2026-0002 </p>
+    </div>
+
+    <div class="col-md-3">
+        <label class="fw-bold"> Title </label>
+        <p class="mb-0"> RFQ for Laptops </p>
+    </div>
+
+    <div class="col-md-3">
+        <label class="fw-bold"> Closing Date </label>
+        <p class="mb-0"> 07-Aug-2026 </p>
+    </div>
+
+    <div class="col-md-3">
+        <label class="fw-bold"> Status </label>
+        <p class="mb-0"> <span class="badge bg-success"> Open</span> </p>
+    </div>
+
+</div>
+
+
+<div class="container-fluid mt-3">
+
+    <!-- Horizontal Scroll -->
+    <div class="comparison-wrapper">
+
+        <table class="table table-bordered align-middle comparison-table">
+
+            <thead class="table-light">
+
+                <tr>
+                    <th class="item-column"> Item </th>
+                    <th class="qty-column"> Required Qty</th>
+
+
+                    <!-- Vendor Headers -->
+                    @for ( vendor of vendors(); track vendor.quotationId) {
+                    <th class="vendor-column text-center"
+                        [class.rejected-column]=" isQuotationHidden(vendor.quotationId)">
+                        <div class="fw-bold"> {{ vendor.vendorName }} </div>
+                        <div>
+                            <small class="text-muted"> {{ vendor.quotationNumber }} </small>
+                        </div>
+
+                        <!-- Quotation Level Actions -->
+                        <div class="mt-2">
+
+                            @if ( !isQuotationHidden( vendor.quotationId)) {
+                            <button type="button" class="btn btn-sm btn-outline-primary me-1"
+                                (click)=" selectEntireQuotation(vendor.quotationId)">
+                                Select All
+                            </button>
+
+                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                (click)=" hideQuotation(vendor.quotationId)">
+                                Reject
+                            </button>
+
+                            }
+
+                            @else {
+
+                            <span class="badge bg-danger me-2">
+                                Rejected
+                            </span>
+
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                (click)="restoreQuotation(vendor.quotationId)">
+                                Undo
+                            </button>
+
+                            }
+
+                        </div>
+
+                    </th>
+
+                    }
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @for (item of comparisonItems(); track item.rfqItemId) {
+
+                <tr [class.selected-row]="isItemSelected(item.rfqItemId)">
+
+                    <!-- Item -->
+                    <td class="fw-bold item-column">
+
+                        {{ item.itemName }}
+
+                        @if (isItemSelected(item.rfqItemId)) {
+
+                        <div>
+                            <small class="text-success">
+                                ✓ Selected
+                            </small>
+                        </div>
+
+                        }
+
+                    </td>
+
+
+                    <!-- Required Qty -->
+                    <td class="qty-column text-center">
+                        {{ item.requiredQuantity }}
+                    </td>
+
+
+                    <!-- Vendor Item -->
+                    @for (vendor of vendors(); track vendor.quotationId) {
+
+                    <td class="vendor-column" [class.rejected-column]=" isQuotationHidden(vendor.quotationId)"
+                        [class.selected-cell]="getQuotationItem(item, vendor.quotationId) && isQuotationItemSelected(item.rfqItemId, getQuotationItem(item, vendor.quotationId)!.quotationItemId)">
+
+
+                        @if (getQuotationItem(item, vendor.quotationId); as quotationItem) {
+
+                        <div class="price-container">
+
+
+                            <div class="price-row">
+                                <span> Unit Price </span>
+                                <strong> ₹{{ quotationItem.unitPrice | number }} </strong>
+                            </div>
+
+                            <div class="price-row">
+                                <span> Tax </span>
+                                <span> ₹{{ quotationItem.tax | number }}</span>
+                            </div>
+
+                            <div class="price-row">
+                                <span> Discount </span>
+                                <span> ₹{{ quotationItem.discount | number }} </span>
+                            </div>
+
+                            <div class="price-row total-row">
+                                <span> Total </span>
+                                <strong> ₹{{ quotationItem.totalAmount | number }} </strong>
+                            </div>
+
+
+                            <!-- Item Selection -->
+
+                            <!-- Item Selection -->
+                            <div class="text-center mt-2">
+
+                                @if ( isQuotationItemSelected( item.rfqItemId, quotationItem.quotationItemId)) {
+
+                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                    (click)="unselectQuotationItem(item.rfqItemId)">
+                                    Unselect
+                                </button>
+
+                                }
+
+                                @else {
+
+                                <input class="form-check-input me-1" type="radio" [name]="'item_' + item.rfqItemId"
+                                    [disabled]=" isQuotationHidden( vendor.quotationId) "
+                                    (change)=" selectQuotationItem(item.rfqItemId, quotationItem.quotationItemId )">
+
+                                <label> Select</label>
+                                }
+                            </div>
+                        </div>
+
+                        }
+
+
+                        @else {
+                        <div class="text-center text-muted"> Not Quoted</div>
+                        }
+                    </td>
+                    }
+
+                </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- Final Submit -->
+    <div class="d-flex justify-content-end mt-3">
+
+        <button type="button" class="btn btn-primary" (click)="submitSelection()">
+            Submit Selection
+        </button>
+
+    </div>
+
+</div>

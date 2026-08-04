@@ -1,0 +1,110 @@
+.comparison-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  position: relative;
+}
+
+.comparison-table {
+  min-width: max-content;
+  white-space: nowrap;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  /* Outer border */
+  border-top: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+}
+
+
+/* Thin horizontal + vertical borders */
+.comparison-table th,
+.comparison-table td {
+  border: 0;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+}
+
+
+/* Sticky Item */
+.item-column {
+  width: 160px;
+  min-width: 160px;
+  max-width: 160px;
+
+  position: sticky;
+  left: 0;
+  z-index: 5;
+
+  background: #fff !important;
+}
+
+
+/* Sticky Required Qty */
+.qty-column {
+  width: 110px;
+  min-width: 110px;
+  max-width: 110px;
+
+  position: sticky;
+  left: 160px;
+  z-index: 5;
+
+  background: #fff !important;
+
+  /* Slightly stronger divider before vendors */
+  border-right: 1px solid #adb5bd !important;
+}
+
+
+/* Header */
+thead .item-column,
+thead .qty-column {
+  background: #f8f9fa !important;
+  z-index: 10;
+}
+
+
+/* Vendor */
+.vendor-column {
+  width: 260px;
+  min-width: 260px;
+}
+
+
+/* Price */
+.price-container {
+  width: 160px;
+  margin: auto;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 2px 0;
+}
+
+.total-row {
+  border-top: 1px solid #dee2e6;
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+
+/* Selected */
+.selected-cell {
+  background-color: #e8f5e9 !important;
+}
+
+.selected-row .item-column,
+.selected-row .qty-column {
+  background-color: #e8f5e9 !important;
+}
+
+
+/* Rejected */
+.rejected-column {
+  background-color: #f8f9fa !important;
+  opacity: 0.55;
+}
