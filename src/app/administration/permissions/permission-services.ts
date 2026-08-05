@@ -8,21 +8,38 @@ import { ApiEndpoints } from '../../../api-endpoints';
 export class PermissionServices {
   constructor(private http: HttpClient) {}
 
-  getPermissionServices() {
+  // getPermissionServices() {
+  //   return this.http.get(ApiEndpoints.Permission.ReadAll);
+  // }
+
+  // createPermissionServices(data: any) {
+  //   return this.http.post(ApiEndpoints.Permission.Create, data);
+  // }
+
+  // updatePermissionServices(data: any) {
+  //   return this.http.put(
+  //     `${ApiEndpoints.Permission.Update}/${data.PermissionId}`,
+  //     data,
+  //   );
+  // }
+  // deletePermissionServices(id: any) {
+  //   return this.http.delete(`${ApiEndpoints.Permission.Delete}/${id}`);
+  // }
+
+  getPermissionServices(){
     return this.http.get(ApiEndpoints.Permission.ReadAll);
   }
 
-  createPermissionServices(data: any) {
-    return this.http.post(ApiEndpoints.Permission.Create, data);
+  createPermissionServices(data:any){
+    return this.http.post(ApiEndpoints.Permission.Create,data)
   }
 
-  updatePermissionServices(data: any) {
-    return this.http.put(
-      `${ApiEndpoints.Permission.Update}/${data.PermissionId}`,
-      data,
-    );
+  updatePermissionServices(data:any){
+    return this.http.put(`${ApiEndpoints.Permission.Update}/${data.PermissionId}`,data);
   }
-  deletePermissionServices(id: any) {
+
+  deletePermissionServices(id:number){
     return this.http.delete(`${ApiEndpoints.Permission.Delete}/${id}`);
   }
+  
 }
