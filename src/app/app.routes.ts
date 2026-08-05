@@ -2,18 +2,25 @@ import { Routes } from '@angular/router';
 
 import { Login } from './auth/login/login';
 import { DashboardLayout } from './layout/dashboard-layout/dashboard-layout';
-
+import { Santosh } from './santosh/santosh'; 
 import { authGuard } from './core/guards/auth-guard';
 import { Dashboard } from './administration/dashboard/dashboard';
 
 export const routes: Routes = [
+
+{
+    path: '',
+    component: Santosh,
+  },
+  
   {
     path: 'login',
     component: Login,
   },
 
   {
-    path: '',
+    //dashboard
+    path: 'dashboard',
     component: DashboardLayout,
     canActivate: [authGuard],
     children: [

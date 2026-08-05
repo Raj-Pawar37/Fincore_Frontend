@@ -1,71 +1,5 @@
-<h1>Role Data</h1>
 
-<!-- Button trigger modal -->
-<button
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#exampleModal"
->
-  Insert Data
-</button>
-
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-
-      <form [formGroup]="RoleForm" (ngSubmit)="AddRole(RoleForm.value)">
-        <div class="modal-body">
-          Role Name
-          <input type="text" class="form-control" formControlName="RoleName" />
-
-          Role Description
-          <input
-            type="text"
-            class="form-control"
-            formControlName="RoleDescription"
-          />
-          Role Code
-          <input type="text" class="form-control" formControlName="RoleCode" />
-          Status
-          <select class="form-control" formControlName="IsActive">
-            <option [ngValue]="true">Active</option>
-            <option [ngValue]="false">Inactive</option>
-          </select>
-        </div>
-
-        <div class="modal-footer">
-          <input type="submit" class="btn btn-primary" value="insert" />
-
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
+<h1> Role Data </h1>
 <div class="container mt-4">
   <div class="card shadow-sm">
     <div class="card-body">
@@ -80,120 +14,32 @@
               <th scope="col">Active Status</th>
               <th scope="col" class="text-center">Action</th>
             </tr>
-          </thead>
+          </thead> 
           <tbody>
-            @for (
-              element of dataSource;
-              track element.roleId ?? element.RoleId
-            ) {
+            @for (element of dataSource; track element.roleId) {
               <tr>
-                <td>{{ element.roleId ?? element.RoleId }}</td>
-                <td>{{ element.roleName ?? element.RoleName }}</td>
+                <td>{{ element.roleId }}</td>
+                <td>{{ element.roleName }}</td>
+                <td>{{ element.roleDescription }}</td>
+                <td>{{ element.roleCode }}</td>
                 <td>
-                  {{ element.roleDescription ?? element.RoleDescription }}
-                </td>
-                <td>{{ element.roleCode ?? element.RoleCode }}</td>
-                <td>
-                  <span
-                    class="badge"
-                    [ngClass]="
-                      (element.isActive ?? element.IsActive)
-                        ? 'bg-success'
-                        : 'bg-danger'
-                    "
-                  >
-                    {{
-                      (element.isActive ?? element.IsActive)
-                        ? "Active"
-                        : "Inactive"
-                    }}
+                  <span class="badge" [ngClass]="element.isActive ? 'bg-success' : 'bg-danger'">
+                    {{ element.isActive ? 'Active' : 'Inactive' }}
                   </span>
                 </td>
                 <td class="text-center">
-                  <button
-                    class="btn btn-sm btn-primary me-2"
-                    (click)="Editbtn(element)"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal2"
-                  >
+                  <button class="btn btn-sm btn-primary me-2">
                     Edit
                   </button>
-                  <button
-                    class="btn btn-sm btn-danger"
-                    (click)="Deletebtn(element.roleId)"
-                  >
+                  <button class="btn btn-sm btn-danger" >
                     Delete
                   </button>
                 </td>
               </tr>
-            }
+            } 
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- Edit modal-->
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="exampleModal2"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel2"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-
-      <form [formGroup]="RoleForm" (ngSubmit)="update(RoleForm.value)">
-        <input type="hidden" formControlName="RoleId" />
-
-        <div class="modal-body">
-          Role Name
-          <input type="text" class="form-control" formControlName="RoleName" />
-
-          Role Description
-          <input
-            type="text"
-            class="form-control"
-            formControlName="RoleDescription"
-          />
-          Role Code
-          <input type="text" class="form-control" formControlName="RoleCode" />
-          Status
-          <select class="form-control" formControlName="IsActive">
-            <option [ngValue]="true">Active</option>
-            <option [ngValue]="false">Inactive</option>
-          </select>
-        </div>
-
-        <div class="modal-footer">
-          <input
-            type="submit"
-            class="btn btn-primary"
-            data-bs-dismiss="modal"
-            value="insert"
-          />
-
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-        </div>
-      </form>
     </div>
   </div>
 </div>
