@@ -9,10 +9,15 @@ import { ApiEndpoints } from '../../api-endpoints';
 })
 export class LoginService {
   private readonly http = inject(HttpClient);
-  
 
-  login(reqData: LoginRequest) : Observable<LoginResponse>{
-    return this.http.post<LoginResponse>(ApiEndpoints.Auth.Login, reqData, { withCredentials : true});
+  login(reqData: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(ApiEndpoints.Auth.Login, reqData, {
+      withCredentials: true,
+    });
   }
 
+  //try
+  setup2FA(data: any): Observable<any> {
+    return this.http.post(ApiEndpoints.Auth.setup2FA, data);
+  }
 }

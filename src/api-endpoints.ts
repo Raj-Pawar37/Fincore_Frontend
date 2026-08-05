@@ -6,7 +6,10 @@ export const ApiEndpoints = {
   Auth: {
     DevLogin: `${BASE_URL}/auth/devLogin`,
     Login: `${BASE_URL}/auth/login`,
-    VerifyOtp: `${BASE_URL}/auth/verifyTwoFactor`,
+
+    setup2FA: `${BASE_URL}/auth/setup2fa`,
+    VerifyOtp: `${BASE_URL}/auth/verify2fa`,
+
     RefreshToken: `${BASE_URL}/auth/refreshToken`,
     Logout: `${BASE_URL}/auth/logout`,
     ForgotPassword: `${BASE_URL}/auth/forgot-password`,

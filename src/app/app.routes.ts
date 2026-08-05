@@ -2,17 +2,26 @@ import { Routes } from '@angular/router';
 
 import { Login } from './auth/login/login';
 import { DashboardLayout } from './layout/dashboard-layout/dashboard-layout';
-import { Santosh } from './santosh/santosh'; 
+import { Santosh } from './santosh/santosh';
 import { authGuard } from './core/guards/auth-guard';
 import { Dashboard } from './administration/dashboard/dashboard';
+import { Verifyotp } from './verifyotp/verifyotp';
+import { Setup2fa } from './setup2fa/setup2fa';
 
 export const routes: Routes = [
-
-{
+  {
     path: '',
     component: Santosh,
   },
-  
+
+  {
+    path: 'verifyotp/:userName',
+    component: Verifyotp,
+  },
+  {
+    path: 'setup2fa/:userName',
+    component: Setup2fa,
+  },
   {
     path: 'login',
     component: Login,
@@ -32,64 +41,73 @@ export const routes: Routes = [
       {
         path: 'administration',
         loadChildren: () =>
-          import('./administration/administration.routes')
-            .then(routes => routes.administrationRoutes),
+          import('./administration/administration.routes').then(
+            (routes) => routes.administrationRoutes,
+          ),
       },
 
       {
         path: 'business-partners',
         loadChildren: () =>
-          import('./business-partners/business-partners.routes')
-            .then(routes => routes.businessPartnerRoutes),
+          import('./business-partners/business-partners.routes').then(
+            (routes) => routes.businessPartnerRoutes,
+          ),
       },
 
       {
         path: 'masters',
         loadChildren: () =>
-          import('./masters/masters.routes')
-            .then(routes => routes.masterRoutes),
+          import('./masters/masters.routes').then(
+            (routes) => routes.masterRoutes,
+          ),
       },
 
       {
         path: 'budget',
         loadChildren: () =>
-          import('./budget/budget.routes')
-            .then(routes => routes.budgetRoutes),
+          import('./budget/budget.routes').then(
+            (routes) => routes.budgetRoutes,
+          ),
       },
 
       {
         path: 'employee-services',
         loadChildren: () =>
-          import('./employee-services/employee-services.routes')
-            .then(routes => routes.employeeServicesRoutes),
+          import('./employee-services/employee-services.routes').then(
+            (routes) => routes.employeeServicesRoutes,
+          ),
       },
 
       {
         path: 'procurement',
         loadChildren: () =>
-          import('./procurement/procurement.routes')
-            .then(routes => routes.procurementRoutes),
+          import('./procurement/procurement.routes').then(
+            (routes) => routes.procurementRoutes,
+          ),
       },
 
       {
         path: 'finance',
         loadChildren: () =>
-          import('./finance/finance.routes')
-            .then(routes => routes.financeRoutes),
+          import('./finance/finance.routes').then(
+            (routes) => routes.financeRoutes,
+          ),
       },
 
       {
         path: 'revenue',
         loadChildren: () =>
-          import('./revenue/revenue.routes')
-            .then(routes => routes.revenueRoutes),
+          import('./revenue/revenue.routes').then(
+            (routes) => routes.revenueRoutes,
+          ),
       },
 
       {
         path: 'reports',
         loadChildren: () =>
-          import('./reports/reports.routes')
-            .then(routes => routes.reportsRoutes),
+          import('./reports/reports.routes').then(
+            (routes) => routes.reportsRoutes,
+          ),
       },
 
       {
@@ -101,20 +119,23 @@ export const routes: Routes = [
   },
 
   {
-      path: 'unauthorized',
-      loadComponent: () =>
-        import('./shared/pages/unauthorized/unauthorized').then(component => component.Unauthorized),
-    },
+    path: 'unauthorized',
+    loadComponent: () =>
+      import('./shared/pages/unauthorized/unauthorized').then(
+        (component) => component.Unauthorized,
+      ),
+  },
 
-    {
-      path: 'not-found',
-      loadComponent: () => import('./shared/pages/not-found/not-found').then(component => component.NotFound),
-    },
-
+  {
+    path: 'not-found',
+    loadComponent: () =>
+      import('./shared/pages/not-found/not-found').then(
+        (component) => component.NotFound,
+      ),
+  },
 
   {
     path: '**',
     redirectTo: 'not-found',
   },
-
 ];

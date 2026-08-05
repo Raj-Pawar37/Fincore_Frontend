@@ -14,4 +14,3 @@ export interface LoginResponse {
   data: LoginData | null;
   error: string | null;
 }
-
