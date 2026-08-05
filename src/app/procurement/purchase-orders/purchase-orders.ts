@@ -12,7 +12,7 @@ import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-purchase-orders',
-  imports: [ReactiveFormsModule, CommonModule, PageHeader, DebounceDropdown, ConfirmModal, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, PageHeader, ConfirmModal, RouterLink],
   templateUrl: './purchase-orders.html',
   styleUrl: './purchase-orders.css',
 })
