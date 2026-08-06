@@ -75,7 +75,14 @@ export const ApiEndpoints = {
     Delete: `${BASE_URL}/APInvoice`,
     ReadById: `${BASE_URL}/APInvoice`,
     ReadAll: `${BASE_URL}/APInvoice`,
+  },
 
+  Payment: {
+    Create: `${BASE_URL}/payment`,
+    Update: `${BASE_URL}/payment`,
+    Delete: `${BASE_URL}/payment`,
+    ReadById: `${BASE_URL}/payment`,
+    ReadAll: `${BASE_URL}/payment`,
   },
 
   RFQItem: {
