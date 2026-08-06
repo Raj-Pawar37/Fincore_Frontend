@@ -85,6 +85,14 @@ export const ApiEndpoints = {
     ReadAll: `${BASE_URL}/payment`,
   },
 
+  GRN: {
+    Create: `${BASE_URL}/gRN`,
+    Update: `${BASE_URL}/gRN`,
+    Delete: `${BASE_URL}/gRN`,
+    ReadById: `${BASE_URL}/gRN`,
+    ReadAll: `${BASE_URL}/gRN/GetAllGRN`,
+  },
+
   RFQItem: {
     ReadByRFQId: `${BASE_URL}/rfqItems/ReadByRFQId`,
   },
